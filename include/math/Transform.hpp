@@ -4,7 +4,7 @@
 #include "Vector3.hpp"
 #include "Point3.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
 Matrix4<T> scale(T x, T y, T z)
@@ -192,4 +192,4 @@ public:
     }
 };
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

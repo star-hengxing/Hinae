@@ -10,7 +10,7 @@
 
 #include "rng.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 template <std::floating_point T>
 std::tuple<Vector3<T>, Vector3<T>> croodinate_system(const Vector3<T>& v)
@@ -43,4 +43,4 @@ Vector3<T> uniform_on_sphere()
     return { x, y, z };
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

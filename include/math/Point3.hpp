@@ -2,7 +2,7 @@
 
 #include "Vector3.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 using Point3f = Point3<float>;
 using Point3d = Point3<double>;
@@ -64,4 +64,4 @@ std::ostream& operator << (std::ostream& os, const Point3<T>& v)
     return os;
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

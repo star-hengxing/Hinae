@@ -15,7 +15,7 @@
 #define NAMESPACE_END(name) }
 #endif
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 template <typename T>
 concept arithmetic = std::integral<T> || std::floating_point<T>;
@@ -170,4 +170,4 @@ std::ostream& operator << (std::ostream& os, Axia axia)
     return os;
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

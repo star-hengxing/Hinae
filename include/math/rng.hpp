@@ -2,7 +2,7 @@
 
 #include "basic.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
 struct LCG
@@ -30,4 +30,4 @@ T rand() noexcept
     return rng.get();
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

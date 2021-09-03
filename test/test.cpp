@@ -5,7 +5,7 @@
 
 #include "tools.hpp"
 
-using namespace star;
+using namespace Hinae;
 
 static void base_test()
 {

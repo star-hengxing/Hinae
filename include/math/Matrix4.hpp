@@ -9,7 +9,7 @@
 
 #include "basic.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 using Matrix4d = Matrix4<double>;
 using Matrix4f = Matrix4<float>;
@@ -86,7 +86,10 @@ public:
 	{
 		Matrix4<T> ret;
 #ifdef USE_SIMD
-        sse_matrix4x4_mul(data, rhs.data, ret.data);
+        if constexpr(!std::is_same_v<float, T>)
+            static_assert(false, "simd only support float type");
+        else
+            sse_matrix4x4_mul(data, rhs.data, ret.data);
 #else
         const Matrix4<T>& lhs = *this;
         T sum;
@@ -253,4 +256,4 @@ std::ostream& operator << (std::ostream& os, const Matrix4<T>& m)
 	return os;
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)

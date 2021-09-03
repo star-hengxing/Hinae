@@ -2,7 +2,7 @@
 
 #include "basic.hpp"
 
-NAMESPACE_BEGIN(star)
+NAMESPACE_BEGIN(Hinae)
 
 using Vector3f = Vector3<float>;
 using Vector3d = Vector3<double>;
@@ -48,7 +48,7 @@ struct Vector3
     void normalize() { (*this) *= reciprocal(norm()); }
     Vector3<T> normalized() const { return (*this) * reciprocal(norm()); }
 
-    Vector3<T> abs() const { return { star::abs(x), star::abs(y), star::abs(z) }; }
+    Vector3<T> abs() const { return { Hinae::abs(x), Hinae::abs(y), Hinae::abs(z) }; }
 
     T max_component() const { return max(x, y, z); }
 
@@ -114,4 +114,4 @@ std::ostream& operator<<(std::ostream& os, const Vector3<T>& v)
     return os;
 }
 
-NAMESPACE_END(star)
+NAMESPACE_END(Hinae)
