@@ -59,6 +59,9 @@ struct Point3;
 template <arithmetic T>
 struct Matrix4;
 
+template <arithmetic T, uint32_t a, uint32_t c, uint32_t m>
+struct Linear_congruential_generator;
+
 template <
 	template <arithmetic T> typename To,
 	template <arithmetic T> typename From,
