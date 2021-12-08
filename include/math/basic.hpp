@@ -17,6 +17,19 @@
 
 NAMESPACE_BEGIN(Hinae)
 
+using u8  = uint8_t;
+using u16 = uint16_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+
+using i8  = int8_t;
+using i16 = int16_t;
+using i32 = int32_t;
+using i64 = int64_t;
+
+using f32 = float;
+using f64 = double;
+
 template <typename T>
 concept arithmetic = std::integral<T> || std::floating_point<T>;
 
@@ -28,6 +41,12 @@ constexpr T ONE = static_cast<T>(1);
 
 template <arithmetic T>
 constexpr T MAX_NUMBER = std::numeric_limits<T>::max();
+
+template <arithmetic T>
+constexpr T MIN_NUMBER = std::numeric_limits<T>::min();
+
+template <std::floating_point T>
+constexpr T INFINITY_ = std::numeric_limits<T>::infinity();
 
 template <std::floating_point T>
 constexpr T PI = static_cast<T>(3.14159265358979323846);
@@ -59,7 +78,7 @@ struct Point3;
 template <arithmetic T>
 struct Matrix4;
 
-template <arithmetic T, uint32_t a, uint32_t c, uint32_t m>
+template <arithmetic T, u32 a, u32 c, u32 m>
 struct Linear_congruential_generator;
 
 template <
@@ -154,7 +173,7 @@ constexpr T pow5(T x)
     return x2 * x2 * x;
 }
 
-enum class Axia : uint8_t
+enum class Axia : size_t
 {
     X = 0,
     Y = 1,

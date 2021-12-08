@@ -5,13 +5,13 @@
 NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
-using LCG = Linear_congruential_generator<T, 16807u, 0u, MAX_NUMBER<uint32_t>>;
+using LCG = Linear_congruential_generator<T, 16807u, 0u, MAX_NUMBER<u32>>;
 
-template <arithmetic T, uint32_t A, uint32_t C, uint32_t M>
+template <arithmetic T, u32 A, u32 C, u32 M>
 struct Linear_congruential_generator
 {
 public:
-    Linear_congruential_generator(uint32_t seed = time(nullptr)) : seed(seed) {}
+    Linear_congruential_generator(u32 seed = time(nullptr)) : seed(seed) {}
 
     constexpr T get()
     { 
@@ -23,10 +23,10 @@ public:
     }
     
 private:
-    static constexpr uint32_t multiplier = A;
-    static constexpr uint32_t increment = C;
-    static constexpr uint32_t modulus = M;
-    uint32_t seed;
+    static constexpr u32 multiplier = A;
+    static constexpr u32 increment = C;
+    static constexpr u32 modulus = M;
+    u32 seed;
 };
 
 NAMESPACE_END(Hinae)

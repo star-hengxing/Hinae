@@ -4,9 +4,9 @@
 
 NAMESPACE_BEGIN(Hinae)
 
-using Vector3f = Vector3<float>;
-using Vector3d = Vector3<double>;
-using Vector3i = Vector3<int>;
+using Vector3f = Vector3<f32>;
+using Vector3d = Vector3<f64>;
+using Vector3i = Vector3<size_t>;
 
 template <arithmetic T>
 struct Vector3
@@ -64,7 +64,7 @@ struct Vector3
         return (x < y) ? ( x < z ? Axia::X : Axia::Z ) : ( y < z ? Axia::Y : Axia::Z );
     }
 
-    T operator[](uint32_t i) const
+    T operator[](size_t i) const
     { 
         assert(i >= 0 && i <= 2);
         if(i == 0)      return x;
@@ -72,7 +72,7 @@ struct Vector3
         else            return z;
     }
     
-    T& operator[](uint32_t i)
+    T& operator[](size_t i)
     { 
         assert(i >= 0 && i <= 2);
         if(i == 0)      return x;

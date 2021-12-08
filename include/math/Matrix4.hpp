@@ -11,9 +11,9 @@
 
 NAMESPACE_BEGIN(Hinae)
 
-using Matrix4d = Matrix4<double>;
-using Matrix4f = Matrix4<float>;
-using Matrix4i = Matrix4<int>;
+using Matrix4d = Matrix4<f64>;
+using Matrix4f = Matrix4<f32>;
+using Matrix4i = Matrix4<size_t>;
 
 #ifdef USE_SIMD
 static void sse_matrix4x4_mul(const float* lhs, const float* rhs, float* result)
@@ -22,7 +22,7 @@ static void sse_matrix4x4_mul(const float* lhs, const float* rhs, float* result)
     __m128 row2 = _mm_load_ps(&rhs[4]);
     __m128 row3 = _mm_load_ps(&rhs[8]);
     __m128 row4 = _mm_load_ps(&rhs[12]);
-    for(uint32_t i = 0; i < 4; ++i)
+    for(size_t i = 0; i < 4; ++i)
     {
         __m128 ai1 = _mm_set1_ps(lhs[i * 4 + 0]);
         __m128 ai2 = _mm_set1_ps(lhs[i * 4 + 1]);
@@ -93,12 +93,12 @@ public:
 #else
         const Matrix4<T>& lhs = *this;
         T sum;
-		for(uint32_t i = 0; i < 4; i++)
+		for(size_t i = 0; i < 4; i++)
         {
-            for(uint32_t j = 0; j < 4; j++)
+            for(size_t j = 0; j < 4; j++)
             {
                 sum = 0;
-                for(uint32_t k = 0; k < 4; k++)
+                for(size_t k = 0; k < 4; k++)
                 {
                     sum += lhs[i][k] * rhs[k][j];
                 }
@@ -112,7 +112,7 @@ public:
     struct Index
     {
         Matrix4<T>& m;
-        uint32_t i;
+        size_t i;
 
         Index(const Index&) = delete;
         Index(Index&&) = delete;
@@ -120,11 +120,11 @@ public:
         Index& operator = (const Index&) = delete;
         Index& operator = (Index&&) = delete;
 
-        Index(Matrix4<T>& m, uint32_t i): m(m), i(i) { assert(i < 4); }
+        Index(Matrix4<T>& m, size_t i): m(m), i(i) { assert(i < 4); }
 
         operator T () const { return m.data[i]; }
 
-        Index& operator [] (uint32_t index)
+        Index& operator [] (size_t index)
 		{
 			assert(index < 4);
 			i = i * 4 + index;
@@ -144,9 +144,9 @@ public:
 		}
     };
 
-    Index operator [] (uint32_t index) { return { *this, index }; }
+    Index operator [] (size_t index) { return { *this, index }; }
 
-    Index operator [] (uint32_t index) const
+    Index operator [] (size_t index) const
     {
         return
         {
@@ -191,9 +191,9 @@ public:
     Matrix4<T> adjugate() const
 	{
 		Matrix4<T> m;
-		for(uint32_t i = 0; i < 4; ++i)
+		for(size_t i = 0; i < 4; ++i)
 		{
-			for(uint32_t j = 0; j < 4; ++j)
+			for(size_t j = 0; j < 4; ++j)
 			{
                 const T value = determinant(minor(*this, i, j));
                 m[i][j] = (is_odd(i + j) && !is_zero(value)) ? -value : value;
@@ -223,13 +223,13 @@ private:
                 m[2] * (m[3] * m[7] - m[4] * m[6]);
     }
 
-    static std::array<T, 9> minor(const Matrix4<T>& m, uint32_t i, uint32_t j)
+    static std::array<T, 9> minor(const Matrix4<T>& m, size_t i, size_t j)
 	{
 		std::array<T, 9> ret;
-		uint32_t k = 0;
-		for(uint32_t x = 0; x < 4; ++x)
+		size_t k = 0;
+		for(size_t x = 0; x < 4; ++x)
 		{
-			for(uint32_t y = 0; y < 4; ++y)
+			for(size_t y = 0; y < 4; ++y)
 			{
 				if(x != i && y != j)
 				{
@@ -245,10 +245,10 @@ private:
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Matrix4<T>& m)
 {
-    for(uint32_t i = 0; i < 4; ++i)
+    for(size_t i = 0; i < 4; ++i)
     {
         os << '[';
-        for (uint32_t j = 0; j < 4; ++j)
+        for (size_t j = 0; j < 4; ++j)
         {
             os << m[i][j] << (j != 3 ? ", " : "]\n");
         }
