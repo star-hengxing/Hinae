@@ -63,7 +63,7 @@ public:
     auto operator <=> (const Matrix4<T>&) const = default;
 
     template <arithmetic... U>
-	Matrix4(U... args) : data{ args... } {}
+	Matrix4(U... args) : data{ static_cast<T>(args)... } {}
 
     Matrix4<T>& operator *= (T rhs)
     {
