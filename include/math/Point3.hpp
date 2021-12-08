@@ -29,13 +29,13 @@ struct Point3
     T operator [] (size_t i) const
     { 
         assert(i <= 2);
-        return (reinterpret_cast<T*>(this))[i];
+        return (&x)[i];
     }
     
     T& operator [] (size_t i)
     { 
         assert(i <= 2);
-        return (reinterpret_cast<T*>(this))[i];
+        return (&x)[i];
     }
 };
 

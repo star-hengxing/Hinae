@@ -64,20 +64,16 @@ struct Vector3
         return (x < y) ? ( x < z ? Axia::X : Axia::Z ) : ( y < z ? Axia::Y : Axia::Z );
     }
 
-    T operator[](size_t i) const
+    T operator [] (size_t i) const
     { 
-        assert(i >= 0 && i <= 2);
-        if(i == 0)      return x;
-        else if(i == 1) return y;
-        else            return z;
+        assert(i <= 2);
+        return (&x)[i];
     }
     
-    T& operator[](size_t i)
+    T& operator [] (size_t i)
     { 
-        assert(i >= 0 && i <= 2);
-        if(i == 0)      return x;
-        else if(i == 1) return y;
-        else            return z;
+        assert(i <= 2);
+        return (&x)[i];
     }
 };
 
