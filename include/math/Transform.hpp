@@ -33,12 +33,6 @@ Matrix4<T> translate(const Vector3<T>& v)
     };
 }
 
-template <Axia axia, arithmetic T>
-Matrix4<T> rotate(T degree)
-{
-    return rotate_matrix<T, axia>::get(degree);
-}
-
 template <arithmetic T, Axia axia>
 struct rotate_matrix;
 
@@ -93,6 +87,12 @@ struct rotate_matrix<T, Axia::Z>
     }
 };
 
+template <arithmetic T, Axia axia>
+Matrix4<T> rotate(T degree)
+{
+    return rotate_matrix<T, axia>::get(degree);
+}
+
 template <arithmetic T>
 Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 {
@@ -142,17 +142,17 @@ public:
 
     static Matrix4<T> look_at(const Point3<T>& pos, const Point3<T>& at, const Vector3<T>& up)
     {
-        const Vector3<T> front = (at - pos).normalized();
-		const Vector3<T> right = front.cross(up).normalized();
-		const Vector3<T> Up    = right.cross(front);
-        const auto p = cast<Vector3<T>>(pos);
+        const Vector3<T> forward = (at - pos).normalized();
+		const Vector3<T> right = cross(forward, up).normalized();
+		const Vector3<T> Up    = cross(right, forward);
+        const auto eye = cast<Vector3>(pos);
         return
         {
-             right.x,  right.y,  right.z, -dot(right, p),
-             Up.x,     Up.y,     Up.z,    -dot(right, p),
-            -front.x, -front.y, -front.z,  dot(right, p),
-             ZERO<T>,  ZERO<T>,  ZERO<T>,  ONE<T>
-        }
+            right.x, Up.x, -forward.x, -dot(right,   eye),
+            right.y, Up.y, -forward.y, -dot(Up,      eye),
+            right.z, Up.z, -forward.z,  dot(forward, eye),
+            ZERO<T>, ZERO<T>,  ZERO<T>,  ONE<T>
+        };
     }
 
     static Matrix4<T> orthographic(T width, T height, T z_near, T z_far)
@@ -168,13 +168,11 @@ public:
             ZERO<T>, a22,     ZERO<T>, ZERO<T>,
             ZERO<T>, ZERO<T>, a32,     a33,  
             ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-        }
+        };
     }
 
     static Matrix4<T> perspective(T fov, T aspect, T z_near, T z_far)
     {
-        assert(fov > 0 && aspect > 0 && z_near >= 0 && z_far > z_near);
-
 		const T tan = std::tan(fov / static_cast<T>(2));
 		const T cot = 1 / tan;
 
@@ -188,7 +186,7 @@ public:
             ZERO<T>, a22,     ZERO<T>, ZERO<T>,
             ZERO<T>, ZERO<T>, a32,     a33,  
             ZERO<T>, ZERO<T>, -ONE<T>, ZERO<T>
-        }
+        };
     }
 };
 
