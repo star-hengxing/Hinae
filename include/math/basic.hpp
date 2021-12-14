@@ -73,10 +73,19 @@ template <arithmetic T>
 struct Vector3;
 
 template <arithmetic T>
+struct Vector2;
+
+template <arithmetic T>
 struct Point3;
 
 template <arithmetic T>
+struct Point2;
+
+template <arithmetic T>
 struct Matrix4;
+
+template <arithmetic T>
+struct Triangle;
 
 template <arithmetic T, u32 a, u32 c, u32 m>
 struct Linear_congruential_generator;
@@ -125,9 +134,21 @@ constexpr T max(T x, T y, T z)
 }
 
 template <arithmetic T>
+constexpr T max(T x, T y)
+{
+    return (x > y ? x : y);
+}
+
+template <arithmetic T>
 constexpr T min(T x, T y, T z)
 {
     return (x < y) ? ( x < z ? x : z ) : ( y < z ? y : z );
+}
+
+template <arithmetic T>
+constexpr T min(T x, T y)
+{
+    return (x < y ? x : y);
 }
 
 template <arithmetic T>
