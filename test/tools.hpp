@@ -14,8 +14,8 @@ static int test_pass = 0;
          if (equality)\
 			 test_pass++;\
          else {\
-			 std::cout << '[' << __FILE__ << ';' << __LINE__ <<\
-			 "]\nexpect: " << expect << " actual: " << actual << '\n';\
+			 std::cout << '[' << __FILE__ << ':' << __LINE__ <<\
+			 "] expect: " << expect << " actual: " << actual << '\n';\
          }\
      } while(0)
 

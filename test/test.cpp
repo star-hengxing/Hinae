@@ -1,7 +1,13 @@
 #include <math/basic.hpp>
+
+#include <math/Vector2.hpp>
 #include <math/Vector3.hpp>
+
+#include <math/Point2.hpp>
 #include <math/Point3.hpp>
+
 #include <math/Matrix4.hpp>
+#include <math/Triangle.hpp>
 
 #include "tools.hpp"
 
@@ -80,10 +86,42 @@ static void vector3_test()
 
 	EXPECT_EQ(Vector3(1, 2, 3), 1 + v1);
 }
+
+static void vector2_test()
+{
+	Vector2 v1{0, 1};
+	Vector2 v2{2, 1};
+
+	EXPECT_EQ(Vector2(0, -1), -v1);
+
+	EXPECT_EQ(Vector2(2, 2), v1 + v2);
+	EXPECT_EQ(Vector2(-2, 0), v1 - v2);
+	EXPECT_EQ(Vector2(0, 1), v1 * v2);
+	EXPECT_EQ(Vector2(2, 2), Vector2(4) / Vector2(2));
+
+	EXPECT_EQ(1, v1.norm2());
+	EXPECT_EQ(5, Vector2(3, 4).norm());
+
+	EXPECT_EQ(Vector2(1, 1), Vector2(-1, -1).abs());
+
+	EXPECT_EQ(2, v2.max_component());
+	EXPECT_EQ(1, v2.min_component());
+	EXPECT_EQ(Axia::X, v2.max_dimension());
+	EXPECT_EQ(Axia::Y, v2.min_dimension());
+
+	EXPECT_EQ(0, v1[0]);
+	EXPECT_EQ(1, v1[1]);
+
+	EXPECT_EQ(1, dot(v1, v2));
+	EXPECT_EQ(-2, cross(v1, v2));
+
+	EXPECT_EQ(Vector2(1, 2), 1 + v1);
+}
+
 static void point3_test()
 {
-	Point3 p{ 0, 1, 2 };
-	Point3 q{ 2, 1, 0 };
+	Point3 p{0, 1, 2};
+	Point3 q{2, 1, 0};
 
 	EXPECT_EQ(Vector3(0, -1, -2), -p);
 	EXPECT_EQ(Vector3(-2, 0, 2), p - q);
@@ -94,6 +132,21 @@ static void point3_test()
 
 	EXPECT_EQ(5, distance(Point3(0, 0, 5), Point3(0)));
 	EXPECT_EQ(3, distance2(Point3(1, 1, 1), Point3(0)));
+}
+
+static void point2_test()
+{
+	Point2 p{0, 1};
+	Point2 q{2, 1};
+
+	EXPECT_EQ(Vector2(0, -1), -p);
+	EXPECT_EQ(Vector2(-2, 0), p - q);
+
+	EXPECT_EQ(0, p[0]);
+	EXPECT_EQ(1, p[1]);
+
+	EXPECT_EQ(5, distance(Point2(0, 5), Point2(0)));
+	EXPECT_EQ(2, distance2(Point2(1, 1), Point2(0)));
 }
 
 static void matrix4_test()
@@ -135,11 +188,40 @@ static void matrix4_test()
 	EXPECT_EQ(m6, m5.transpose());
 }
 
+static void triangle_test()
+{
+	f32 n = 2;
+	Triangle t
+	{
+		Point3f{n, 0, 0},
+		Point3f{0, n, 0},
+		Point3f{0, 0, 0}
+	};
+
+	EXPECT_EQ(true, t.inside(Point2f{0.25, 0.25}));
+	EXPECT_EQ(true, t.inside(Point2f{0.75, 0.5}));
+	EXPECT_EQ(true, t.inside(Point2f{0.5, 0.75}));
+	EXPECT_EQ(true, t.inside(Point2f{0.75, 0.75}));
+	EXPECT_EQ(true, t.inside(Point2f{1.25, 0.25}));
+	EXPECT_EQ(true, t.inside(Point2f{0.25, 1.25}));
+	EXPECT_EQ(true, t.inside(Point2f{1.5, 0.5}));
+	EXPECT_EQ(true, t.inside(Point2f{0.5, 1.5}));
+
+	EXPECT_EQ(false, t.inside(Point2f{2, 2}));
+}
+
 int main()
 {
-	vector3_test();
-	point3_test();
 	base_test();
+
+	vector2_test();
+	vector3_test();
+
+	point2_test();
+	point3_test();
+	
 	matrix4_test();
+	triangle_test();
+
 	TEST_RESULT();
 }
