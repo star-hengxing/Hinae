@@ -27,8 +27,8 @@ static void base_test()
 	EXPECT_EQ(true, is_odd(1));
 	EXPECT_EQ(true, is_even(2));
 
-	EXPECT_EQ(1, abs(-1));
-	EXPECT_EQ(1, abs(1));
+	EXPECT_EQ(1, Hinae::abs(-1));
+	EXPECT_EQ(1, Hinae::abs(1));
 
 	EXPECT_EQ(1, max(-1, 0, 1));
 	EXPECT_EQ(3, max(1, 2, 3));

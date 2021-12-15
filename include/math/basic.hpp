@@ -201,7 +201,7 @@ enum class Axia : size_t
     Z = 2
 };
 
-std::ostream& operator << (std::ostream& os, Axia axia)
+inline std::ostream& operator << (std::ostream& os, Axia axia)
 {
     switch(axia)
     {
