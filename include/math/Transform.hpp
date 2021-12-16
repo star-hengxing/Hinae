@@ -7,93 +7,6 @@
 NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
-Matrix4<T> scale(T x, T y, T z)
-{
-    return
-    {
-        x,       ZERO<T>, ZERO<T>, ZERO<T>,
-        ZERO<T>, y,       ZERO<T>, ZERO<T>,
-        ZERO<T>, ZERO<T>, z,       ZERO<T>,
-        ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-    };
-}
-
-template <arithmetic T>
-Matrix4<T> scale(T value) { return scale(value, value, value); }
-
-template <arithmetic T>
-Matrix4<T> translate(const Vector3<T>& v)
-{
-    return
-    {
-        ONE<T>,  ZERO<T>, ZERO<T>, v.x,
-        ZERO<T>, ONE<T>,  ZERO<T>, v.y,
-        ZERO<T>, ZERO<T>, ONE<T>,  v.z,
-        ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-    };
-}
-
-template <arithmetic T, Axia axia>
-struct rotate_matrix;
-
-template <arithmetic T>
-struct rotate_matrix<T, Axia::X>
-{
-    static Matrix4<T> get(T degree)
-    {
-        const T s = std::sin(degree);
-        const T c = std::cos(degree);
-        return
-        {
-            ONE<T>, ZERO<T>,  ZERO<T>, ZERO<T>,
-            ZERO<T>, c,       -s,      ZERO<T>,
-            ZERO<T>, s,        c,      ZERO<T>,
-            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-        };
-    }
-};
-
-template <arithmetic T>
-struct rotate_matrix<T, Axia::Y>
-{
-    static Matrix4<T> get(T degree)
-    {
-        const T s = std::sin(degree);
-        const T c = std::cos(degree);
-        return
-        {
-            c,       ZERO<T>, s,       ZERO<T>,
-            ZERO<T>, ONE<T>,  ZERO<T>, ZERO<T>,
-            -s,      ZERO<T>, c,       ZERO<T>,
-            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-        };
-    }
-};
-
-template <arithmetic T>
-struct rotate_matrix<T, Axia::Z>
-{
-    static Matrix4<T> get(T degree)
-    {
-        const T s = std::sin(degree);
-        const T c = std::cos(degree);
-        return
-        {
-            c,       -s,      ZERO<T>, ZERO<T>,
-            s,        c,      ZERO<T>, ZERO<T>,
-            ZERO<T>, ZERO<T>, ONE<T>,  ZERO<T>,
-            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
-        };
-    }
-};
-
-template <arithmetic T, Axia axia>
-Matrix4<T> rotate(T degree)
-{
-    return rotate_matrix<T, axia>::get(degree);
-}
-
-template <arithmetic T>
 Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 {
     const T x = rhs.x, y = rhs.y, z = rhs.z;
@@ -129,17 +42,77 @@ class Transform
 {
 public:
     Transform() = default;
-
     Transform(const Transform&) = default;
-
     Transform(Transform&&) = default;
-
     ~Transform() = default;
-
     Transform& operator = (const Transform&) = default;
-
     Transform& operator = (Transform&&) = default;
 
+    static Matrix4<T> scale(T value)
+    {
+        return scale(value, value, value);
+    }
+
+    static Matrix4<T> scale(T x, T y, T z)
+    {
+        return
+        {
+            x,       ZERO<T>, ZERO<T>, ZERO<T>,
+            ZERO<T>, y,       ZERO<T>, ZERO<T>,
+            ZERO<T>, ZERO<T>, z,       ZERO<T>,
+            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+        };
+    }
+
+    static Matrix4<T> translate(const Vector3<T>& v)
+    {
+        return
+        {
+            ONE<T>,  ZERO<T>, ZERO<T>, v.x,
+            ZERO<T>, ONE<T>,  ZERO<T>, v.y,
+            ZERO<T>, ZERO<T>, ONE<T>,  v.z,
+            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+        };
+    }
+
+    template <Axia axia>
+    static Matrix4<T> rotate(T degree)
+    {
+        const T radian = to_radian(degree);
+        const T s = std::sin(radian);
+        const T c = std::cos(radian);
+        if constexpr(axia == Axia::X)
+        {
+            return
+            {
+                ONE<T>, ZERO<T>,  ZERO<T>, ZERO<T>,
+                ZERO<T>, c,       -s,      ZERO<T>,
+                ZERO<T>, s,        c,      ZERO<T>,
+                ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+            };
+        }
+        else if constexpr(axia == Axia::Y)
+        {
+            return
+            {
+                c,       ZERO<T>, s,       ZERO<T>,
+                ZERO<T>, ONE<T>,  ZERO<T>, ZERO<T>,
+                -s,      ZERO<T>, c,       ZERO<T>,
+                ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+            };
+        }
+        else if constexpr(axia == Axia::Z)
+        {
+            return
+            {
+                c,       -s,      ZERO<T>, ZERO<T>,
+                s,        c,      ZERO<T>, ZERO<T>,
+                ZERO<T>, ZERO<T>, ONE<T>,  ZERO<T>,
+                ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+            };
+        }
+    }
+    
     static Matrix4<T> look_at(const Point3<T>& pos, const Point3<T>& at, const Vector3<T>& up)
     {
         const Vector3<T> forward = (at - pos).normalized();

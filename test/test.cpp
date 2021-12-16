@@ -9,6 +9,8 @@
 #include <math/Matrix4.hpp>
 #include <math/Triangle.hpp>
 
+#include <math/Transform.hpp>
+
 #include "tools.hpp"
 
 using namespace Hinae;
@@ -210,6 +212,39 @@ static void triangle_test()
 	EXPECT_EQ(false, t.inside(Point2f{2, 2}));
 }
 
+static void transform_test()
+{
+	{
+		Matrix4<int> m
+		{
+			2, 0, 0, 0,
+			0, 2, 0, 0,
+			0, 0, 2, 0,
+			0, 0, 0, 1
+		};
+
+		EXPECT_EQ(m, Transform<int>::scale(2));
+		EXPECT_EQ(m, Transform<int>::scale(2, 2, 2));
+	}
+
+	{
+		Matrix4<int> m
+		{
+			1, 0, 0, 1,
+			0, 1, 0, 2,
+			0, 0, 1, 3,
+			0, 0, 0, 1
+		};
+		EXPECT_EQ(m, Transform<int>::translate({1, 2, 3}));
+	}
+
+	{
+		Transform<f32>::rotate<Axia::X>(30);
+		Transform<f32>::rotate<Axia::Y>(45);
+		Transform<f32>::rotate<Axia::Z>(60);
+	}
+}
+
 int main()
 {
 	base_test();
@@ -222,6 +257,8 @@ int main()
 	
 	matrix4_test();
 	triangle_test();
+
+	transform_test();
 
 	TEST_RESULT();
 }
