@@ -146,7 +146,7 @@ public:
 
     static Matrix4<T> perspective(T fov, T aspect, T z_near, T z_far)
     {
-		const T tan = std::tan(fov / static_cast<T>(2));
+		const T tan = std::tan(to_radian(fov / static_cast<T>(2)));
 		const T cot = 1 / tan;
 
         const T a11 = cot / aspect;
