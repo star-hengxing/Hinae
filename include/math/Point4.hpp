@@ -1,0 +1,47 @@
+#pragma once
+
+#include "basic.hpp"
+
+NAMESPACE_BEGIN(Hinae)
+
+using Point4f = Point4<f32>;
+using Point4d = Point4<f64>;
+using Point4i = Point4<isize>;
+
+template <arithmetic T>
+struct Point4
+{
+    T x, y, z, w;
+    
+    Point4(T v) : x(v), y(v), z(v), w(w) {}
+    Point4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+
+    Point4() = default;
+    Point4(const Point4&) = default;
+    Point4(Point4&&) = default;
+    ~Point4() = default;
+    Point4& operator = (const Point4&) = default;
+    Point4& operator = (Point4&&) = default;
+    auto operator <=> (const Point4<T>&) const = default;
+
+    T operator [] (usize i) const
+    { 
+        assert(i <= 3);
+        return (&x)[i];
+    }
+    
+    T& operator [] (usize i)
+    { 
+        assert(i <= 3);
+        return (&x)[i];
+    }
+};
+
+template <arithmetic T>
+std::ostream& operator << (std::ostream& os, const Point4<T>& v)
+{
+    os << '(' << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ')';
+    return os;
+}
+
+NAMESPACE_END(Hinae)

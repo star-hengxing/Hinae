@@ -6,7 +6,7 @@ NAMESPACE_BEGIN(Hinae)
 
 using Vector2f = Vector2<f32>;
 using Vector2d = Vector2<f64>;
-using Vector2i = Vector2<size_t>;
+using Vector2i = Vector2<isize>;
 
 template <arithmetic T>
 struct Vector2
@@ -58,13 +58,13 @@ struct Vector2
 
     Axia min_dimension() const { return (x < y ? Axia::X : Axia::Y); }
 
-    T operator [] (size_t i) const
+    T operator [] (usize i) const
     { 
         assert(i <= 1);
         return (&x)[i];
     }
     
-    T& operator [] (size_t i)
+    T& operator [] (usize i)
     { 
         assert(i <= 1);
         return (&x)[i];

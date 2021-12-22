@@ -6,7 +6,7 @@ NAMESPACE_BEGIN(Hinae)
 
 using Point3f = Point3<f32>;
 using Point3d = Point3<f64>;
-using Point3i = Point3<size_t>;
+using Point3i = Point3<isize>;
 
 template <arithmetic T>
 struct Point3
@@ -26,13 +26,13 @@ struct Point3
 
     Vector3<T> operator - () const { return Vector3<T>(-x, -y, -z); }
 
-    T operator [] (size_t i) const
+    T operator [] (usize i) const
     { 
         assert(i <= 2);
         return (&x)[i];
     }
     
-    T& operator [] (size_t i)
+    T& operator [] (usize i)
     { 
         assert(i <= 2);
         return (&x)[i];

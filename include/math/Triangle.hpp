@@ -8,7 +8,7 @@ NAMESPACE_BEGIN(Hinae)
 
 using Trianglef = Triangle<f32>;
 using Triangled = Triangle<f64>;
-using Trianglei = Triangle<size_t>;
+using Trianglei = Triangle<isize>;
 
 template <arithmetic T>
 struct Barycentric_Coordinates

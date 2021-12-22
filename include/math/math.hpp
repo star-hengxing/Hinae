@@ -2,12 +2,7 @@
 
 #include <tuple>
 
-#include "basic.hpp"
-
 #include "Vector3.hpp"
-#include "Point3.hpp"
-#include "Matrix4.hpp"
-
 #include "rng.hpp"
 
 NAMESPACE_BEGIN(Hinae)

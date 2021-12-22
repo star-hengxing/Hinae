@@ -27,6 +27,9 @@ using i16 = int16_t;
 using i32 = int32_t;
 using i64 = int64_t;
 
+using usize = size_t;
+using isize = ssize_t;
+
 using f32 = float;
 using f64 = double;
 
@@ -74,6 +77,9 @@ struct Vector3;
 
 template <arithmetic T>
 struct Vector2;
+
+template <arithmetic T>
+struct Point4;
 
 template <arithmetic T>
 struct Point3;
@@ -194,7 +200,7 @@ constexpr T pow5(T x)
     return x2 * x2 * x;
 }
 
-enum class Axia : size_t
+enum class Axia : usize
 {
     X = 0,
     Y = 1,
