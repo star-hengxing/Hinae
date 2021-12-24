@@ -200,16 +200,17 @@ static void triangle_test()
 		Point3f{0, 0, 0}
 	};
 
-	EXPECT_EQ(true, t.inside(Point2f{0.25, 0.25}));
-	EXPECT_EQ(true, t.inside(Point2f{0.75, 0.5}));
-	EXPECT_EQ(true, t.inside(Point2f{0.5, 0.75}));
-	EXPECT_EQ(true, t.inside(Point2f{0.75, 0.75}));
-	EXPECT_EQ(true, t.inside(Point2f{1.25, 0.25}));
-	EXPECT_EQ(true, t.inside(Point2f{0.25, 1.25}));
-	EXPECT_EQ(true, t.inside(Point2f{1.5, 0.5}));
-	EXPECT_EQ(true, t.inside(Point2f{0.5, 1.5}));
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.25, 0.25}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.75, 0.5}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 0.5}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 0.75}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.75, 0.75}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{1.25, 0.25}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.25, 1.25}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{1.5, 0.5}).is_inside());
+	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 1.5}).is_inside());
 
-	EXPECT_EQ(false, t.inside(Point2f{2, 2}));
+	EXPECT_EQ(false, t.barycentric2D(Point2f{2, 2}).is_inside());
 }
 
 static void transform_test()
