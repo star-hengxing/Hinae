@@ -28,7 +28,7 @@ using i32 = int32_t;
 using i64 = int64_t;
 
 using usize = size_t;
-using isize = ssize_t;
+using isize = int;
 
 using f32 = float;
 using f64 = double;
@@ -200,21 +200,17 @@ constexpr T pow5(T x)
     return x2 * x2 * x;
 }
 
-enum class Axia : usize
-{
-    X = 0,
-    Y = 1,
-    Z = 2
-};
+enum class Axia : usize { X = 0, Y = 1, Z = 2 };
 
 inline std::ostream& operator << (std::ostream& os, Axia axia)
 {
     switch(axia)
     {
-        case Axia::X : os << "Axia::X"; break;
-        case Axia::Y : os << "Axia::Y"; break;
-        case Axia::Z : os << "Axia::Z"; break;
-        default:       os << "invaild type";
+        using enum Axia;
+        case  X: os << "Axia::X"; break;
+        case  Y: os << "Axia::Y"; break;
+        case  Z: os << "Axia::Z"; break;
+        default: os << "invaild type";
     }
     return os;
 }
