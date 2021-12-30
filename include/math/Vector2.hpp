@@ -17,12 +17,6 @@ struct Vector2
     Vector2(T x, T y) : x(x), y(y) {}
 
     Vector2() = default;
-    Vector2(const Vector2&) = default;
-    Vector2(Vector2&&) = default;
-    ~Vector2() = default;
-    Vector2& operator = (const Vector2&) = default;
-    Vector2& operator = (Vector2&&) = default;
-
     auto operator <=> (const Vector2<T>&) const = default;
 
     Vector2<T> operator - () const { return Vector2<T>(-x, -y); }
@@ -93,7 +87,7 @@ template <arithmetic T>
 Vector2<T> operator / (T lhs, const Vector2<T>& rhs) { return Vector2<T>(lhs) / rhs; }
 
 template <arithmetic T>
-std::ostream& operator<<(std::ostream& os, const Vector2<T>& v)
+std::ostream& operator << (std::ostream& os, const Vector2<T>& v)
 {
     os << '(' << v.x << ", " << v.y << ')';
     return os;

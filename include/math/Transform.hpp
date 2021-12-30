@@ -50,16 +50,8 @@ Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 }
 
 template <arithmetic T>
-class Transform
+struct Transform
 {
-public:
-    Transform() = default;
-    Transform(const Transform&) = default;
-    Transform(Transform&&) = default;
-    ~Transform() = default;
-    Transform& operator = (const Transform&) = default;
-    Transform& operator = (Transform&&) = default;
-
     static Matrix4<T> scale(T value)
     {
         return scale(value, value, value);

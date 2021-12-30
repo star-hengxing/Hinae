@@ -13,17 +13,7 @@ using Trianglei = Triangle<isize>;
 template <arithmetic T>
 struct Barycentric_Coordinates
 {
-private:
     T alpha, beta, gamma;
-
-public:
-    Barycentric_Coordinates() = default;
-    Barycentric_Coordinates(const Barycentric_Coordinates&) = default;
-    Barycentric_Coordinates(Barycentric_Coordinates&&) = default;
-    ~Barycentric_Coordinates() = default;
-    Barycentric_Coordinates& operator = (const Barycentric_Coordinates&) = default;
-    Barycentric_Coordinates& operator = (Barycentric_Coordinates&&) = default;
-    auto operator <=> (const Barycentric_Coordinates<T>&) const = delete;
 
     Barycentric_Coordinates(T f1, T f2, T f3) :
         alpha(f1), beta(f2), gamma(f3) {}
@@ -44,7 +34,7 @@ public:
     T sum() const { return alpha + beta + gamma; }
 
     template <typename U>
-    T interpolated(const U& t1, const U& t2, const U& t3, T w) const
+    U interpolated(const U& t1, const U& t2, const U& t3, T w) const
     {
         assert(!std::isnan(w));
         return (t1 * alpha + t2 * beta + t3 * gamma) * w;
@@ -57,11 +47,6 @@ struct Triangle
     Point3<T> A, B, C;
 
     Triangle() = default;
-    Triangle(const Triangle&) = default;
-    Triangle(Triangle&&) = default;
-    ~Triangle() = default;
-    Triangle& operator = (const Triangle&) = default;
-    Triangle& operator = (Triangle&&) = default;
     auto operator <=> (const Triangle<T>&) const = default;
 
     Triangle(const Point3<T>& p1, const Point3<T>& p2, const Point3<T>& p3) :
@@ -100,5 +85,12 @@ struct Triangle
         return {alpha, beta, gamma};
     }
 };
+
+template <arithmetic T>
+std::ostream& operator << (std::ostream& os, const Triangle<T>& v)
+{
+    os << "Triangle:\n" << v.A << v.B << v.C;
+    return os;
+}
 
 NAMESPACE_END(Hinae)

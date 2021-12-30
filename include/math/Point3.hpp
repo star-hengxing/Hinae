@@ -17,11 +17,6 @@ struct Point3
     Point3(T x, T y, T z) : x(x), y(y), z(z) {}
 
     Point3() = default;
-    Point3(const Point3&) = default;
-    Point3(Point3&&) = default;
-    ~Point3() = default;
-    Point3& operator = (const Point3&) = default;
-    Point3& operator = (Point3&&) = default;
     auto operator <=> (const Point3<T>&) const = default;
 
     Vector3<T> operator - () const { return Vector3<T>(-x, -y, -z); }

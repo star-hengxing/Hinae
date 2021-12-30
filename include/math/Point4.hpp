@@ -17,11 +17,6 @@ struct Point4
     Point4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 
     Point4() = default;
-    Point4(const Point4&) = default;
-    Point4(Point4&&) = default;
-    ~Point4() = default;
-    Point4& operator = (const Point4&) = default;
-    Point4& operator = (Point4&&) = default;
     auto operator <=> (const Point4<T>&) const = default;
 
     T operator [] (usize i) const

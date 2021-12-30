@@ -17,11 +17,6 @@ struct Point2
     Point2(T x, T y) : x(x), y(y) {}
 
     Point2() = default;
-    Point2(const Point2&) = default;
-    Point2(Point2&&) = default;
-    ~Point2() = default;
-    Point2& operator = (const Point2&) = default;
-    Point2& operator = (Point2&&) = default;
     auto operator <=> (const Point2<T>&) const = default;
 
     Vector2<T> operator - () const { return Vector2<T>(-x, -y); }

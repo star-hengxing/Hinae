@@ -17,12 +17,6 @@ struct Vector3
     Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
     Vector3() = default;
-    Vector3(const Vector3&) = default;
-    Vector3(Vector3&&) = default;
-    ~Vector3() = default;
-    Vector3& operator = (const Vector3&) = default;
-    Vector3& operator = (Vector3&&) = default;
-
     auto operator <=> (const Vector3<T>&) const = default;
 
     Vector3<T> operator - () const { return Vector3<T>(-x, -y, -z); }
@@ -104,7 +98,7 @@ template <arithmetic T>
 Vector3<T> operator / (T lhs, const Vector3<T>& rhs) { return Vector3<T>(lhs) / rhs; }
 
 template <arithmetic T>
-std::ostream& operator<<(std::ostream& os, const Vector3<T>& v)
+std::ostream& operator << (std::ostream& os, const Vector3<T>& v)
 {
     os << '(' << v.x << ", " << v.y << ", " << v.z << ')';
     return os;
