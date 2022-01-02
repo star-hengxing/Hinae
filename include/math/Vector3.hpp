@@ -39,8 +39,8 @@ struct Vector3
     T norm2() const { return x * x + y * y + z * z; }
     T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
 
-    void normalize() { (*this) *= reciprocal(norm()); }
-    Vector3<T> normalized() const { return (*this) * reciprocal(norm()); }
+    void normalize() { (*this) /= norm(); }
+    Vector3<T> normalized() const { return (*this) / norm(); }
 
     Vector3<T> abs() const { return { Hinae::abs(x), Hinae::abs(y), Hinae::abs(z) }; }
 

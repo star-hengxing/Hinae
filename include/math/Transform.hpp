@@ -20,33 +20,16 @@ Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 }
 
 template <arithmetic T>
-Point3<T> operator * (const Matrix4<T>& lhs, const Point3<T>& rhs)
-{
-    const T x  = rhs.x, y = rhs.y, z = rhs.z;
-    const T xp = lhs[0][0] * x + lhs[0][1] * y + lhs[0][2] * z + lhs[0][3];
-    const T yp = lhs[1][0] * x + lhs[1][1] * y + lhs[1][2] * z + lhs[1][3];
-    const T zp = lhs[2][0] * x + lhs[2][1] * y + lhs[2][2] * z + lhs[2][3];
-    const T wp = lhs[3][0] * x + lhs[3][1] * y + lhs[3][2] * z + lhs[3][3];
-    if(wp == ZERO<T>)
-    {
-        return { xp, yp, zp };
-    }
-    else
-    {
-        const T inv = reciprocal(wp);
-        return { xp * inv, yp * inv, zp * inv };
-    }
-}
-
-template <arithmetic T>
 Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 {
     const T x  = rhs.x, y = rhs.y, z = rhs.z, w = rhs.w;
-    const T xp = lhs[0][0] * x + lhs[0][1] * y + lhs[0][2] * z + lhs[0][3] * w;
-    const T yp = lhs[1][0] * x + lhs[1][1] * y + lhs[1][2] * z + lhs[1][3] * w;
-    const T zp = lhs[2][0] * x + lhs[2][1] * y + lhs[2][2] * z + lhs[2][3] * w;
-    const T wp = lhs[3][0] * x + lhs[3][1] * y + lhs[3][2] * z + lhs[3][3] * w;
-    return { xp, yp, zp, wp };
+    return
+    {
+        lhs[0][0] * x + lhs[0][1] * y + lhs[0][2] * z + lhs[0][3] * w,
+        lhs[1][0] * x + lhs[1][1] * y + lhs[1][2] * z + lhs[1][3] * w,
+        lhs[2][0] * x + lhs[2][1] * y + lhs[2][2] * z + lhs[2][3] * w,
+        lhs[3][0] * x + lhs[3][1] * y + lhs[3][2] * z + lhs[3][3] * w
+    };
 }
 
 template <arithmetic T>
@@ -156,7 +139,7 @@ struct Transform
         const T a11 = cot / aspect;
         const T a22 = cot;
         const T a32 = (z_far + z_near) / (z_near - z_far);
-        const T a33 = (static_cast<T>(2) * z_far * z_near) / (z_near - z_far);
+        const T a33 = (static_cast<T>(2) * z_far * z_near) / (z_far - z_near);
         return
         {
             a11,     ZERO<T>, ZERO<T>, ZERO<T>,
