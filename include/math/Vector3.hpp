@@ -100,7 +100,7 @@ Vector3<T> operator / (T lhs, const Vector3<T>& rhs) { return Vector3<T>(lhs) / 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Vector3<T>& v)
 {
-    os << '(' << v.x << ", " << v.y << ", " << v.z << ')';
+    os << std::make_tuple(v.x, v.y, v.z);
     return os;
 }
 

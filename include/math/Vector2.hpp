@@ -89,7 +89,7 @@ Vector2<T> operator / (T lhs, const Vector2<T>& rhs) { return Vector2<T>(lhs) / 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Vector2<T>& v)
 {
-    os << '(' << v.x << ", " << v.y << ')';
+    os << std::make_tuple(v.x, v.y);
     return os;
 }
 

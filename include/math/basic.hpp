@@ -6,6 +6,7 @@
 #include <iostream>
 #include <concepts>
 #include <limits>
+#include <tuple>
 
 #ifndef NAMESPACE_BEGIN
 #define NAMESPACE_BEGIN(name) namespace name {
@@ -212,6 +213,22 @@ inline std::ostream& operator << (std::ostream& os, Axia axia)
         case  Z: os << "Axia::Z"; break;
         default: os << "invaild type";
     }
+    return os;
+}
+
+template<typename... Ts>
+std::ostream& operator << (std::ostream& os, const std::tuple<Ts...>& tuple)
+{
+    std::apply
+    (
+        [&os](const Ts&... args)
+        {
+            os << '(';
+            std::size_t n{0};
+            ((os << args << (++n != sizeof...(Ts) ? ", " : "")), ...);
+            os << ')';
+        }, tuple
+    );
     return os;
 }
 

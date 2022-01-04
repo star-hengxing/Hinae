@@ -55,7 +55,7 @@ T distance2(const Point3<T>& lhs, const Point3<T>& rhs) noexcept
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Point3<T>& v)
 {
-    os << '(' << v.x << ", " << v.y << ", " << v.z << ')';
+    os << std::make_tuple(v.x, v.y, v.z);
     return os;
 }
 

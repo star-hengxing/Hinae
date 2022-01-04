@@ -1,11 +1,13 @@
 set_project("Hinae")
 
-target("test")
-    add_includedirs("include")
-    add_files("test/test.cpp")
+if is_os("linux") then
+    set_toolchains("clang")
+end
 
+add_includedirs("include")
+set_languages("c++20")
+set_warnings("all", "error")
+
+target("test")
     set_kind("binary")
-    set_languages("c++20")
-    
-    add_cxxflags("-Wall")
-    set_warnings("all", "error")
+    add_files("test/test.cpp")
