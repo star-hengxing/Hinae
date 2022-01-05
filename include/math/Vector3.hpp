@@ -31,10 +31,15 @@ struct Vector3
     Vector3<T> operator * (const Vector3<T>& rhs) const { return Vector3<T>(x * rhs.x, y * rhs.y, z * rhs.z); }
     Vector3<T> operator / (const Vector3<T>& rhs) const { return Vector3<T>(x / rhs.x, y / rhs.y, z / rhs.z); }
 
-    Vector3<T>& operator += (T rhs) const { x += rhs.x; y += rhs.y; z += rhs.z; }
-    Vector3<T>& operator -= (T rhs) const { x -= rhs.x; y -= rhs.y; z -= rhs.z; }
-    Vector3<T>& operator *= (T rhs) const { x *= rhs.x; y *= rhs.y; z *= rhs.z; }
-    Vector3<T>& operator /= (T rhs) const { (*this) *= reciprocal(rhs); }
+    void operator += (T rhs) { x += rhs; y += rhs; z += rhs; }
+    void operator -= (T rhs) { x -= rhs; y -= rhs; z -= rhs; }
+    void operator *= (T rhs) { x *= rhs; y *= rhs; z *= rhs; }
+    void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
+
+    void operator += (const Vector3<T>& rhs) { x += rhs.x; y += rhs.y; z += rhs.z; }
+    void operator -= (const Vector3<T>& rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; }
+    void operator *= (const Vector3<T>& rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; }
+    void operator /= (const Vector3<T>& rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; }
 
     T norm2() const { return x * x + y * y + z * z; }
     T norm()  const { return static_cast<T>(std::sqrt(norm2())); }

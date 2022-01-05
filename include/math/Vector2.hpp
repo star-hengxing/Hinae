@@ -31,10 +31,15 @@ struct Vector2
     Vector2<T> operator * (const Vector2<T>& rhs) const { return Vector2<T>(x * rhs.x, y * rhs.y); }
     Vector2<T> operator / (const Vector2<T>& rhs) const { return Vector2<T>(x / rhs.x, y / rhs.y); }
 
-    Vector2<T>& operator += (T rhs) const { x += rhs.x; y += rhs.y; }
-    Vector2<T>& operator -= (T rhs) const { x -= rhs.x; y -= rhs.y; }
-    Vector2<T>& operator *= (T rhs) const { x *= rhs.x; y *= rhs.y; }
-    Vector2<T>& operator /= (T rhs) const { (*this) *= reciprocal(rhs); }
+    void operator += (T rhs) { x += rhs; y += rhs; }
+    void operator -= (T rhs) { x -= rhs; y -= rhs; }
+    void operator *= (T rhs) { x *= rhs; y *= rhs; }
+    void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
+
+    void operator += (const Vector2<T>& rhs) { x += rhs.x; y += rhs.y; }
+    void operator -= (const Vector2<T>& rhs) { x -= rhs.x; y -= rhs.y; }
+    void operator *= (const Vector2<T>& rhs) { x *= rhs.x; y *= rhs.y; }
+    void operator /= (const Vector2<T>& rhs) { x /= rhs.x; y /= rhs.y; }
 
     T norm2() const { return x * x + y * y; }
     T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
