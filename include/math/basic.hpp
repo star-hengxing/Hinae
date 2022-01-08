@@ -18,18 +18,18 @@
 
 NAMESPACE_BEGIN(Hinae)
 
-using u8  = uint8_t;
-using u16 = uint16_t;
-using u32 = uint32_t;
-using u64 = uint64_t;
+using u8  = uint_least8_t;
+using u16 = uint_least16_t;
+using u32 = uint_least32_t;
+using u64 = uint_least64_t;
 
-using i8  = int8_t;
-using i16 = int16_t;
-using i32 = int32_t;
-using i64 = int64_t;
+using i8  = int_least8_t;
+using i16 = int_least16_t;
+using i32 = int_least32_t;
+using i64 = int_least64_t;
 
 using usize = size_t;
-using isize = int;
+using isize = long;
 
 using f32 = float;
 using f64 = double;
@@ -38,40 +38,40 @@ template <typename T>
 concept arithmetic = std::integral<T> || std::floating_point<T>;
 
 template <arithmetic T>
-constexpr T ZERO = static_cast<T>(0);
+inline constexpr T ZERO = static_cast<T>(0);
 
 template <arithmetic T>
-constexpr T ONE = static_cast<T>(1);
+inline constexpr T ONE = static_cast<T>(1);
 
 template <arithmetic T>
-constexpr T MAX_NUMBER = std::numeric_limits<T>::max();
+inline constexpr T MAX_NUMBER = std::numeric_limits<T>::max();
 
 template <arithmetic T>
-constexpr T MIN_NUMBER = std::numeric_limits<T>::min();
+inline constexpr T MIN_NUMBER = std::numeric_limits<T>::min();
 
 template <std::floating_point T>
-constexpr T INFINITY_ = std::numeric_limits<T>::infinity();
+inline constexpr T INFINITY_ = std::numeric_limits<T>::infinity();
+
+template <typename T>
+inline constexpr T PI = std::numbers::pi_v<T>;
+
+template <typename T>
+inline constexpr T INV_PI = std::numbers::inv_pi_v<T>;
 
 template <std::floating_point T>
-constexpr T PI = static_cast<T>(3.14159265358979323846);
+inline constexpr T INV_2PI = static_cast<T>(0.15915494309189533577);
 
 template <std::floating_point T>
-constexpr T INV_PI = static_cast<T>(0.31830988618379067154);
+inline constexpr T INV_4PI = static_cast<T>(0.07957747154594766788);
 
 template <std::floating_point T>
-constexpr T INV_2PI = static_cast<T>(0.15915494309189533577);
+inline constexpr T PI_OVER_2 = static_cast<T>(1.57079632679489661923);
 
 template <std::floating_point T>
-constexpr T INV_4PI = static_cast<T>(0.07957747154594766788);
+inline constexpr T PI_OVER_4 = static_cast<T>(0.78539816339744830961);
 
-template <std::floating_point T>
-constexpr T PI_OVER_2 = static_cast<T>(1.57079632679489661923);
-
-template <std::floating_point T>
-constexpr T PI_OVER_4 = static_cast<T>(0.78539816339744830961);
-
-template <std::floating_point T>
-constexpr T SQRT2 = static_cast<T>(1.41421356237309504880);
+template <typename T>
+inline constexpr T SQRT2 = std::numbers::sqrt2_v<T>;
 
 template <arithmetic T>
 struct Vector3;
