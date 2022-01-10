@@ -62,13 +62,13 @@ struct Transform
         };
     }
 
-    template <Axia axia>
+    template <Axis axis>
     static Matrix4<T> rotate(T degree)
     {
         const T radian = to_radian(degree);
         const T s = std::sin(radian);
         const T c = std::cos(radian);
-        if constexpr(axia == Axia::X)
+        if constexpr(axis == Axis::X)
         {
             return
             {
@@ -78,7 +78,7 @@ struct Transform
                 ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
             };
         }
-        else if constexpr(axia == Axia::Y)
+        else if constexpr(axis == Axis::Y)
         {
             return
             {
@@ -88,7 +88,7 @@ struct Transform
                 ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
             };
         }
-        else if constexpr(axia == Axia::Z)
+        else if constexpr(axis == Axis::Z)
         {
             return
             {

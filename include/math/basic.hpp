@@ -202,17 +202,17 @@ constexpr T pow5(T x)
     return x2 * x2 * x;
 }
 
-enum class Axia : usize { X = 0, Y = 1, Z = 2 };
+enum class Axis : usize { X = 0, Y = 1, Z = 2 };
 
-inline std::ostream& operator << (std::ostream& os, Axia axia)
+inline std::ostream& operator << (std::ostream& os, Axis axis)
 {
-    switch(axia)
+    switch(axis)
     {
-        using enum Axia;
-        case  X: os << "Axia::X"; break;
-        case  Y: os << "Axia::Y"; break;
-        case  Z: os << "Axia::Z"; break;
-        default: os << "invaild type";
+        using enum Axis;
+        case  X: os << "Axis::X"; break;
+        case  Y: os << "Axis::Y"; break;
+        case  Z: os << "Axis::Z"; break;
+        default: os << "invalid type";
     }
     return os;
 }

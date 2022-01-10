@@ -53,9 +53,9 @@ struct Vector2
 
     T min_component() const { return min(x, y); }
 
-    Axia max_dimension() const { return (x > y ? Axia::X : Axia::Y); }
+    Axis max_dimension() const { return (x > y ? Axis::X : Axis::Y); }
 
-    Axia min_dimension() const { return (x < y ? Axia::X : Axia::Y); }
+    Axis min_dimension() const { return (x < y ? Axis::X : Axis::Y); }
 
     T operator [] (usize i) const
     { 

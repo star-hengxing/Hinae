@@ -76,8 +76,8 @@ static void vector3_test()
 
 	EXPECT_EQ(2, v2.max_component());
 	EXPECT_EQ(0, v2.min_component());
-	EXPECT_EQ(Axia::X, v2.max_dimension());
-	EXPECT_EQ(Axia::Z, v2.min_dimension());
+	EXPECT_EQ(Axis::X, v2.max_dimension());
+	EXPECT_EQ(Axis::Z, v2.min_dimension());
 
 	EXPECT_EQ(0, v1[0]);
 	EXPECT_EQ(1, v1[1]);
@@ -108,8 +108,8 @@ static void vector2_test()
 
 	EXPECT_EQ(2, v2.max_component());
 	EXPECT_EQ(1, v2.min_component());
-	EXPECT_EQ(Axia::X, v2.max_dimension());
-	EXPECT_EQ(Axia::Y, v2.min_dimension());
+	EXPECT_EQ(Axis::X, v2.max_dimension());
+	EXPECT_EQ(Axis::Y, v2.min_dimension());
 
 	EXPECT_EQ(0, v1[0]);
 	EXPECT_EQ(1, v1[1]);
@@ -240,9 +240,9 @@ static void transform_test()
 	}
 
 	{
-		Transform<f32>::rotate<Axia::X>(30);
-		Transform<f32>::rotate<Axia::Y>(45);
-		Transform<f32>::rotate<Axia::Z>(60);
+		Transform<f32>::rotate<Axis::X>(30);
+		Transform<f32>::rotate<Axis::Y>(45);
+		Transform<f32>::rotate<Axis::Z>(60);
 	}
 }
 

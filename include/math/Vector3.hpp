@@ -53,14 +53,14 @@ struct Vector3
 
     T min_component() const { return min(x, y, z); }
 
-    Axia max_dimension() const
+    Axis max_dimension() const
     {
-        return (x > y) ? ( x > z ? Axia::X : Axia::Z ) : ( y > z ? Axia::Y : Axia::Z );
+        return (x > y) ? ( x > z ? Axis::X : Axis::Z ) : ( y > z ? Axis::Y : Axis::Z );
     }
 
-    Axia min_dimension() const
+    Axis min_dimension() const
     {
-        return (x < y) ? ( x < z ? Axia::X : Axia::Z ) : ( y < z ? Axia::Y : Axia::Z );
+        return (x < y) ? ( x < z ? Axis::X : Axis::Z ) : ( y < z ? Axis::Y : Axis::Z );
     }
 
     T operator [] (usize i) const
