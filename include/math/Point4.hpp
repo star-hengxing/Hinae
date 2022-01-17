@@ -13,8 +13,9 @@ struct Point4
 {
     T x, y, z, w;
     
-    Point4(T v) : x(v), y(v), z(v), w(w) {}
-    Point4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+    constexpr Point4(T v) : x(v), y(v), z(v), w(w) {}
+    constexpr Point4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+    constexpr Point4(const Point3<T>& p, T w = ONE<T>) : x(p.x), y(p.y), z(p.z), w(w) {}
 
     Point4() = default;
     auto operator <=> (const Point4<T>&) const = default;
@@ -35,8 +36,7 @@ struct Point4
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Point4<T>& v)
 {
-    os << std::make_tuple(v.x, v.y, v.z, v.w);
-    return os;
+    return os << std::make_tuple(v.x, v.y, v.z, v.w);
 }
 
 NAMESPACE_END(Hinae)

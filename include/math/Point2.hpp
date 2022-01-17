@@ -13,13 +13,18 @@ struct Point2
 {
     T x, y;
     
-    Point2(T v) : x(v), y(v) {}
-    Point2(T x, T y) : x(x), y(y) {}
+    constexpr Point2(T v) : x(v), y(v) {}
+    constexpr Point2(T x, T y) : x(x), y(y) {}
+
+    template <arithmetic U>
+    constexpr explicit Point2(const Point2<U>& p)
+        : x(static_cast<T>(p.x))
+        , y(static_cast<T>(p.y)) {}
 
     Point2() = default;
     auto operator <=> (const Point2<T>&) const = default;
 
-    Vector2<T> operator - () const { return Vector2<T>(-x, -y); }
+    Vector2<T> operator - () const { return {-x, -y}; }
 
     T operator [] (usize i) const
     { 
@@ -35,19 +40,19 @@ struct Point2
 };
 
 template <arithmetic T>
-Vector2<T> operator - (const Point2<T>& lhs, const Point2<T>& rhs) noexcept
+constexpr Vector2<T> operator - (const Point2<T>& lhs, const Point2<T>& rhs)
 {
-    return Vector2<T>(lhs.x - rhs.x, lhs.y - rhs.y);
+    return {lhs.x - rhs.x, lhs.y - rhs.y};
 }
 
 template <arithmetic T>
-T distance(const Point2<T>& lhs, const Point2<T>& rhs) noexcept
+constexpr T distance(const Point2<T>& lhs, const Point2<T>& rhs)
 {
     return (lhs - rhs).norm();
 }
 
 template <arithmetic T>
-T distance2(const Point2<T>& lhs, const Point2<T>& rhs) noexcept
+constexpr T distance2(const Point2<T>& lhs, const Point2<T>& rhs)
 {
     return (lhs - rhs).norm2();
 }
@@ -55,8 +60,7 @@ T distance2(const Point2<T>& lhs, const Point2<T>& rhs) noexcept
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Point2<T>& v)
 {
-    os << std::make_tuple(v.x, v.y);
-    return os;
+    return os << std::make_tuple(v.x, v.y);
 }
 
 NAMESPACE_END(Hinae)

@@ -102,7 +102,7 @@ template <
 	template <arithmetic T> typename To,
 	template <arithmetic T> typename From,
 	arithmetic T>
-To<T> cast(const From<T>& geometry)
+constexpr To<T> cast(const From<T>& geometry)
 {
 	static_assert(sizeof(To<T>) <= sizeof(From<T>));
 	if constexpr(sizeof(To<T>) == sizeof(T) * 2)

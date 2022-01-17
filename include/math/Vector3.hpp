@@ -13,23 +13,23 @@ struct Vector3
 {
     T x, y, z;
     
-    Vector3(T v) : x(v), y(v), z(v) {}
-    Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
+    constexpr Vector3(T v) : x(v), y(v), z(v) {}
+    constexpr Vector3(T x, T y, T z) : x(x), y(y), z(z) {}
 
     Vector3() = default;
     auto operator <=> (const Vector3<T>&) const = default;
 
-    Vector3<T> operator - () const { return Vector3<T>(-x, -y, -z); }
+    Vector3<T> operator - () const { return {-x, -y, -z}; }
 
-    Vector3<T> operator + (T rhs) const { return Vector3<T>(x + rhs, y + rhs, z + rhs); }
-    Vector3<T> operator - (T rhs) const { return Vector3<T>(x - rhs, y - rhs, z - rhs); }
-    Vector3<T> operator * (T rhs) const { return Vector3<T>(x * rhs, y * rhs, z * rhs); }
+    Vector3<T> operator + (T rhs) const { return {x + rhs, y + rhs, z + rhs}; }
+    Vector3<T> operator - (T rhs) const { return {x - rhs, y - rhs, z - rhs}; }
+    Vector3<T> operator * (T rhs) const { return {x * rhs, y * rhs, z * rhs}; }
     Vector3<T> operator / (T rhs) const { return (*this) * reciprocal(rhs); }
 
-    Vector3<T> operator + (const Vector3<T>& rhs) const { return Vector3<T>(x + rhs.x, y + rhs.y, z + rhs.z); }
-    Vector3<T> operator - (const Vector3<T>& rhs) const { return Vector3<T>(x - rhs.x, y - rhs.y, z - rhs.z); }
-    Vector3<T> operator * (const Vector3<T>& rhs) const { return Vector3<T>(x * rhs.x, y * rhs.y, z * rhs.z); }
-    Vector3<T> operator / (const Vector3<T>& rhs) const { return Vector3<T>(x / rhs.x, y / rhs.y, z / rhs.z); }
+    Vector3<T> operator + (const Vector3<T>& rhs) const { return {x + rhs.x, y + rhs.y, z + rhs.z}; }
+    Vector3<T> operator - (const Vector3<T>& rhs) const { return {x - rhs.x, y - rhs.y, z - rhs.z}; }
+    Vector3<T> operator * (const Vector3<T>& rhs) const { return {x * rhs.x, y * rhs.y, z * rhs.z}; }
+    Vector3<T> operator / (const Vector3<T>& rhs) const { return {x / rhs.x, y / rhs.y, z / rhs.z}; }
 
     void operator += (T rhs) { x += rhs; y += rhs; z += rhs; }
     void operator -= (T rhs) { x -= rhs; y -= rhs; z -= rhs; }
@@ -77,13 +77,13 @@ struct Vector3
 };
 
 template <arithmetic T>
-T dot(const Vector3<T>& lhs, const Vector3<T>& rhs)
+constexpr T dot(const Vector3<T>& lhs, const Vector3<T>& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
 }
 
 template <arithmetic T>
-Vector3<T> cross(const Vector3<T>& lhs, const Vector3<T>& rhs)
+constexpr Vector3<T> cross(const Vector3<T>& lhs, const Vector3<T>& rhs)
 {
     return
     {
@@ -94,19 +94,18 @@ Vector3<T> cross(const Vector3<T>& lhs, const Vector3<T>& rhs)
 }
 
 template <arithmetic T>
-Vector3<T> operator + (T lhs, const Vector3<T>& rhs) { return rhs + lhs; }
+constexpr Vector3<T> operator + (T lhs, const Vector3<T>& rhs) { return rhs + lhs; }
 template <arithmetic T>
-Vector3<T> operator - (T lhs, const Vector3<T>& rhs) { return rhs - lhs; }
+constexpr Vector3<T> operator - (T lhs, const Vector3<T>& rhs) { return rhs - lhs; }
 template <arithmetic T>
-Vector3<T> operator * (T lhs, const Vector3<T>& rhs) { return rhs * lhs; }
+constexpr Vector3<T> operator * (T lhs, const Vector3<T>& rhs) { return rhs * lhs; }
 template <arithmetic T>
-Vector3<T> operator / (T lhs, const Vector3<T>& rhs) { return Vector3<T>(lhs) / rhs; }
+constexpr Vector3<T> operator / (T lhs, const Vector3<T>& rhs) { return Vector3<T>(lhs) / rhs; }
 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Vector3<T>& v)
 {
-    os << std::make_tuple(v.x, v.y, v.z);
-    return os;
+    return os << std::make_tuple(v.x, v.y, v.z);
 }
 
 NAMESPACE_END(Hinae)

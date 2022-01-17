@@ -13,23 +13,23 @@ struct Vector2
 {
     T x, y;
     
-    Vector2(T v) : x(v), y(v) {}
-    Vector2(T x, T y) : x(x), y(y) {}
+    constexpr Vector2(T v) : x(v), y(v) {}
+    constexpr Vector2(T x, T y) : x(x), y(y) {}
 
     Vector2() = default;
     auto operator <=> (const Vector2<T>&) const = default;
 
-    Vector2<T> operator - () const { return Vector2<T>(-x, -y); }
+    Vector2<T> operator - () const { return {-x, -y}; }
 
-    Vector2<T> operator + (T rhs) const { return Vector2<T>(x + rhs, y + rhs); }
-    Vector2<T> operator - (T rhs) const { return Vector2<T>(x - rhs, y - rhs); }
-    Vector2<T> operator * (T rhs) const { return Vector2<T>(x * rhs, y * rhs); }
+    Vector2<T> operator + (T rhs) const { return {x + rhs, y + rhs}; }
+    Vector2<T> operator - (T rhs) const { return {x - rhs, y - rhs}; }
+    Vector2<T> operator * (T rhs) const { return {x * rhs, y * rhs}; }
     Vector2<T> operator / (T rhs) const { return (*this) * reciprocal(rhs); }
 
-    Vector2<T> operator + (const Vector2<T>& rhs) const { return Vector2<T>(x + rhs.x, y + rhs.y); }
-    Vector2<T> operator - (const Vector2<T>& rhs) const { return Vector2<T>(x - rhs.x, y - rhs.y); }
-    Vector2<T> operator * (const Vector2<T>& rhs) const { return Vector2<T>(x * rhs.x, y * rhs.y); }
-    Vector2<T> operator / (const Vector2<T>& rhs) const { return Vector2<T>(x / rhs.x, y / rhs.y); }
+    Vector2<T> operator + (const Vector2<T>& rhs) const { return {x + rhs.x, y + rhs.y}; }
+    Vector2<T> operator - (const Vector2<T>& rhs) const { return {x - rhs.x, y - rhs.y}; }
+    Vector2<T> operator * (const Vector2<T>& rhs) const { return {x * rhs.x, y * rhs.y}; }
+    Vector2<T> operator / (const Vector2<T>& rhs) const { return {x / rhs.x, y / rhs.y}; }
 
     void operator += (T rhs) { x += rhs; y += rhs; }
     void operator -= (T rhs) { x -= rhs; y -= rhs; }
@@ -47,7 +47,7 @@ struct Vector2
     void normalize() { (*this) *= reciprocal(norm()); }
     Vector2<T> normalized() const { return (*this) * reciprocal(norm()); }
 
-    Vector2<T> abs() const { return { Hinae::abs(x), Hinae::abs(y) }; }
+    Vector2<T> abs() const { return {Hinae::abs(x), Hinae::abs(y)}; }
 
     T max_component() const { return max(x, y); }
 
@@ -71,31 +71,30 @@ struct Vector2
 };
 
 template <arithmetic T>
-T dot(const Vector2<T>& lhs, const Vector2<T>& rhs)
+constexpr T dot(const Vector2<T>& lhs, const Vector2<T>& rhs)
 {
     return lhs.x * rhs.x + lhs.y * rhs.y;
 }
 
 template <arithmetic T>
-T cross(const Vector2<T>& lhs, const Vector2<T>& rhs)
+constexpr T cross(const Vector2<T>& lhs, const Vector2<T>& rhs)
 {
     return lhs.x * rhs.y - lhs.y * rhs.x;
 }
 
 template <arithmetic T>
-Vector2<T> operator + (T lhs, const Vector2<T>& rhs) { return rhs + lhs; }
+constexpr Vector2<T> operator + (T lhs, const Vector2<T>& rhs) { return rhs + lhs; }
 template <arithmetic T>
-Vector2<T> operator - (T lhs, const Vector2<T>& rhs) { return rhs - lhs; }
+constexpr Vector2<T> operator - (T lhs, const Vector2<T>& rhs) { return rhs - lhs; }
 template <arithmetic T>
-Vector2<T> operator * (T lhs, const Vector2<T>& rhs) { return rhs * lhs; }
+constexpr Vector2<T> operator * (T lhs, const Vector2<T>& rhs) { return rhs * lhs; }
 template <arithmetic T>
-Vector2<T> operator / (T lhs, const Vector2<T>& rhs) { return Vector2<T>(lhs) / rhs; }
+constexpr Vector2<T> operator / (T lhs, const Vector2<T>& rhs) { return Vector2<T>(lhs) / rhs; }
 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Vector2<T>& v)
 {
-    os << std::make_tuple(v.x, v.y);
-    return os;
+    return os << std::make_tuple(v.x, v.y);
 }
 
 NAMESPACE_END(Hinae)
