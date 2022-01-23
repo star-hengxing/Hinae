@@ -26,6 +26,10 @@ struct Point2
 
     Vector2<T> operator - () const { return {-x, -y}; }
 
+    Point2<T> operator + (const Vector2<T>& v) { return {x + v.x, y + v.y}; }
+
+    void operator += (const Vector2<T>& v) { x += v.x; y += v.y; }
+
     T operator [] (usize i) const
     { 
         assert(i <= 1);

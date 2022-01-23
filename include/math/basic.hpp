@@ -19,18 +19,18 @@
 
 NAMESPACE_BEGIN(Hinae)
 
-using u8  = uint_least8_t;
-using u16 = uint_least16_t;
-using u32 = uint_least32_t;
-using u64 = uint_least64_t;
+using u8  = uint_fast8_t;
+using u16 = uint_fast16_t;
+using u32 = uint_fast32_t;
+using u64 = uint_fast64_t;
 
-using i8  = int_least8_t;
-using i16 = int_least16_t;
-using i32 = int_least32_t;
-using i64 = int_least64_t;
+using i8  = int_fast8_t;
+using i16 = int_fast16_t;
+using i32 = int_fast32_t;
+using i64 = int_fast64_t;
 
-using usize = size_t;
-using isize = long;
+using usize = std::size_t;
+using isize = long long;
 
 using f32 = float;
 using f64 = double;
@@ -98,10 +98,12 @@ struct Triangle;
 template <arithmetic T, u32 a, u32 c, u32 m>
 struct Linear_congruential_generator;
 
-template <
+template
+<
 	template <arithmetic T> typename To,
 	template <arithmetic T> typename From,
-	arithmetic T>
+    arithmetic T
+>
 constexpr To<T> cast(const From<T>& geometry)
 {
 	static_assert(sizeof(To<T>) <= sizeof(From<T>));
@@ -200,6 +202,12 @@ constexpr T pow5(T x)
 {
     const T x2 = x * x;
     return x2 * x2 * x;
+}
+
+template <template <arithmetic T> typename U, arithmetic T>
+constexpr U<T> lerp(const U<T>& left, const U<T>& right, const T& w)
+{
+    return left * w + (ONE<T> - w) * right;
 }
 
 enum class Axis : usize { X = 0, Y = 1, Z = 2 };
