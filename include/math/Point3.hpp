@@ -27,6 +27,8 @@ struct Point3
 
     Vector3<T> operator - () const { return {-x, -y, -z}; }
 
+    Point3<T> operator + (const Vector3<T>& v) { return {x + v.x, y + v.y, z + v.z}; }
+
     T operator [] (usize i) const
     { 
         assert(i <= 2);

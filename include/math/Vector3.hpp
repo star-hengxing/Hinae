@@ -94,6 +94,19 @@ constexpr Vector3<T> cross(const Vector3<T>& lhs, const Vector3<T>& rhs)
 }
 
 template <arithmetic T>
+constexpr std::tuple<Vector3<T>, Vector3<T>>
+local_coordinate_system(const Vector3<T>& v1)
+{
+    const auto& [x, y, z] = v1;
+    Vector3<T> v2;
+    if(std::abs(x) > std::abs(y))
+        v2 = Vector3<T>{-z, ZERO<T>, x} / std::sqrt(x * x + z * z);
+    else
+        v2 = Vector3<T>{ZERO<T>, z, -y} / std::sqrt(y * y + z * z);
+    return {v2, cross(v1, v2)};
+}
+
+template <arithmetic T>
 constexpr Vector3<T> operator + (T lhs, const Vector3<T>& rhs) { return rhs + lhs; }
 template <arithmetic T>
 constexpr Vector3<T> operator - (T lhs, const Vector3<T>& rhs) { return rhs - lhs; }
