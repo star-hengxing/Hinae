@@ -22,12 +22,14 @@ struct Point3
         , y(static_cast<T>(p.y))
         , z(static_cast<T>(p.z)) {}
 
-    Point3() = default;
-    auto operator <=> (const Point3<T>&) const = default;
+    constexpr Point3() = default;
+    constexpr auto operator <=> (const Point3<T>&) const = default;
 
-    Vector3<T> operator - () const { return {-x, -y, -z}; }
+    constexpr Vector3<T> operator - () const { return {-x, -y, -z}; }
 
-    Point3<T> operator + (const Vector3<T>& v) { return {x + v.x, y + v.y, z + v.z}; }
+    constexpr Point3<T> operator + (const Vector3<T>& v) { return {x + v.x, y + v.y, z + v.z}; }
+
+    constexpr Point3<T> operator += (const Vector3<T>& v) { x += v.x; y += v.y; z += v.z; }
 
     T operator [] (usize i) const
     { 

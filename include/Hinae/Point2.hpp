@@ -21,14 +21,14 @@ struct Point2
         : x(static_cast<T>(p.x))
         , y(static_cast<T>(p.y)) {}
 
-    Point2() = default;
-    auto operator <=> (const Point2<T>&) const = default;
+    constexpr Point2() = default;
+    constexpr auto operator <=> (const Point2<T>&) const = default;
 
-    Vector2<T> operator - () const { return {-x, -y}; }
+    constexpr Vector2<T> operator - () const { return {-x, -y}; }
 
-    Point2<T> operator + (const Vector2<T>& v) { return {x + v.x, y + v.y}; }
+    constexpr Point2<T> operator + (const Vector2<T>& v) { return {x + v.x, y + v.y}; }
 
-    void operator += (const Vector2<T>& v) { x += v.x; y += v.y; }
+    constexpr void operator += (const Vector2<T>& v) { x += v.x; y += v.y; }
 
     T operator [] (usize i) const
     { 

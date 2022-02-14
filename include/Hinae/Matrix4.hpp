@@ -54,19 +54,19 @@ private:
     T data[16];
 
 public:
-    Matrix4() = default;
-    auto operator <=> (const Matrix4<T>&) const = default;
+    constexpr Matrix4() = default;
+    constexpr auto operator <=> (const Matrix4<T>&) const = default;
 
     template <arithmetic... U>
-	Matrix4(U... args) : data{ static_cast<T>(args)... } {}
+	constexpr Matrix4(U... args) : data{ static_cast<T>(args)... } {}
 
-    Matrix4<T>& operator *= (T rhs)
+    constexpr Matrix4<T>& operator *= (T rhs)
     {
         for(auto& i : data) i *= rhs;
         return *this;
     }
 
-    Matrix4<T> operator * (T rhs) const
+    constexpr Matrix4<T> operator * (T rhs) const
     {
         return
         {
@@ -150,7 +150,7 @@ public:
         };
     }
 
- 	static Matrix4<T> identity()
+ 	static constexpr Matrix4<T> identity()
 	{
 		return
 		{
@@ -161,7 +161,7 @@ public:
 		};
 	}
 
-    static Matrix4<T> fill(T value)
+    static constexpr Matrix4<T> fill(T value)
     {
         return
         {
@@ -172,7 +172,7 @@ public:
         };
     }
 
-    Matrix4<T> transpose() const
+    constexpr Matrix4<T> transpose() const
 	{
 		return
         {
@@ -183,7 +183,7 @@ public:
         };
 	}
     
-    Matrix4<T> inverse() const
+    constexpr Matrix4<T> inverse() const
 	{
 		Matrix4<T> adjugate;
         const Matrix4<T>& m = *this;

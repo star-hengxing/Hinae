@@ -162,7 +162,7 @@ constexpr T min(T x, T y)
 }
 
 template <arithmetic T>
-T clamp(T low, T value, T high)
+constexpr T clamp(T low, T value, T high)
 {
     if(value <= low)       return low;
     else if(value >= high) return high;

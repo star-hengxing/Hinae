@@ -16,20 +16,25 @@ struct Vector2
     constexpr Vector2(T v) : x(v), y(v) {}
     constexpr Vector2(T x, T y) : x(x), y(y) {}
 
-    Vector2() = default;
-    auto operator <=> (const Vector2<T>&) const = default;
+    template <arithmetic U>
+    constexpr explicit Vector2(const Vector2<U>& p)
+        : x(static_cast<T>(p.x))
+        , y(static_cast<T>(p.y)) {}
 
-    Vector2<T> operator - () const { return {-x, -y}; }
+    constexpr Vector2() = default;
+    constexpr auto operator <=> (const Vector2<T>&) const = default;
 
-    Vector2<T> operator + (T rhs) const { return {x + rhs, y + rhs}; }
-    Vector2<T> operator - (T rhs) const { return {x - rhs, y - rhs}; }
-    Vector2<T> operator * (T rhs) const { return {x * rhs, y * rhs}; }
-    Vector2<T> operator / (T rhs) const { return (*this) * reciprocal(rhs); }
+    constexpr Vector2<T> operator - () const { return {-x, -y}; }
 
-    Vector2<T> operator + (const Vector2<T>& rhs) const { return {x + rhs.x, y + rhs.y}; }
-    Vector2<T> operator - (const Vector2<T>& rhs) const { return {x - rhs.x, y - rhs.y}; }
-    Vector2<T> operator * (const Vector2<T>& rhs) const { return {x * rhs.x, y * rhs.y}; }
-    Vector2<T> operator / (const Vector2<T>& rhs) const { return {x / rhs.x, y / rhs.y}; }
+    constexpr Vector2<T> operator + (T rhs) const { return {x + rhs, y + rhs}; }
+    constexpr Vector2<T> operator - (T rhs) const { return {x - rhs, y - rhs}; }
+    constexpr Vector2<T> operator * (T rhs) const { return {x * rhs, y * rhs}; }
+    constexpr Vector2<T> operator / (T rhs) const { return (*this) * reciprocal(rhs); }
+
+    constexpr Vector2<T> operator + (const Vector2<T>& rhs) const { return {x + rhs.x, y + rhs.y}; }
+    constexpr Vector2<T> operator - (const Vector2<T>& rhs) const { return {x - rhs.x, y - rhs.y}; }
+    constexpr Vector2<T> operator * (const Vector2<T>& rhs) const { return {x * rhs.x, y * rhs.y}; }
+    constexpr Vector2<T> operator / (const Vector2<T>& rhs) const { return {x / rhs.x, y / rhs.y}; }
 
     void operator += (T rhs) { x += rhs; y += rhs; }
     void operator -= (T rhs) { x -= rhs; y -= rhs; }
@@ -41,21 +46,27 @@ struct Vector2
     void operator *= (const Vector2<T>& rhs) { x *= rhs.x; y *= rhs.y; }
     void operator /= (const Vector2<T>& rhs) { x /= rhs.x; y /= rhs.y; }
 
-    T norm2() const { return x * x + y * y; }
+    constexpr T norm2() const { return x * x + y * y; }
     T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
 
     void normalize() { (*this) *= reciprocal(norm()); }
     Vector2<T> normalized() const { return (*this) * reciprocal(norm()); }
 
-    Vector2<T> abs() const { return {Hinae::abs(x), Hinae::abs(y)}; }
+    Vector2<T> abs() const
+    {
+        if constexpr(std::is_same_v<f32, T> || std::is_same_v<f64, T>)
+            return {std::abs(x), std::abs(y)};
+        else
+            return {Hinae::abs(x), Hinae::abs(y)};
+    }
 
-    T max_component() const { return max(x, y); }
+    constexpr T max_component() const { return max(x, y); }
 
-    T min_component() const { return min(x, y); }
+    constexpr T min_component() const { return min(x, y); }
 
-    Axis max_dimension() const { return (x > y ? Axis::X : Axis::Y); }
+    constexpr Axis max_dimension() const { return (x > y ? Axis::X : Axis::Y); }
 
-    Axis min_dimension() const { return (x < y ? Axis::X : Axis::Y); }
+    constexpr Axis min_dimension() const { return (x < y ? Axis::X : Axis::Y); }
 
     T operator [] (usize i) const
     { 
@@ -85,11 +96,7 @@ constexpr T cross(const Vector2<T>& lhs, const Vector2<T>& rhs)
 template <arithmetic T>
 constexpr Vector2<T> operator + (T lhs, const Vector2<T>& rhs) { return rhs + lhs; }
 template <arithmetic T>
-constexpr Vector2<T> operator - (T lhs, const Vector2<T>& rhs) { return rhs - lhs; }
-template <arithmetic T>
 constexpr Vector2<T> operator * (T lhs, const Vector2<T>& rhs) { return rhs * lhs; }
-template <arithmetic T>
-constexpr Vector2<T> operator / (T lhs, const Vector2<T>& rhs) { return Vector2<T>(lhs) / rhs; }
 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Vector2<T>& v)

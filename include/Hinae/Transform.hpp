@@ -8,7 +8,7 @@
 NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
-Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
+constexpr Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 {
     const T x = rhs.x, y = rhs.y, z = rhs.z;
     return
@@ -20,7 +20,7 @@ Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 }
 
 template <arithmetic T>
-Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
+constexpr Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 {
     const T x  = rhs.x, y = rhs.y, z = rhs.z, w = rhs.w;
     return
@@ -35,12 +35,12 @@ Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 template <arithmetic T>
 struct Transform
 {
-    static Matrix4<T> scale(T value)
+    static constexpr Matrix4<T> scale(T value)
     {
         return scale(value, value, value);
     }
 
-    static Matrix4<T> scale(T x, T y, T z)
+    static constexpr Matrix4<T> scale(T x, T y, T z)
     {
         return
         {
@@ -51,7 +51,7 @@ struct Transform
         };
     }
 
-    static Matrix4<T> translate(const Vector3<T>& v)
+    static constexpr Matrix4<T> translate(const Vector3<T>& v)
     {
         return
         {
@@ -100,7 +100,7 @@ struct Transform
         }
     }
     
-    static Matrix4<T> look_at(const Point3<T>& pos, const Point3<T>& at, const Vector3<T>& up)
+    static constexpr Matrix4<T> look_at(const Point3<T>& pos, const Point3<T>& at, const Vector3<T>& up)
     {
         const Vector3<T> forward = (at - pos).normalized();
 		const Vector3<T> right = cross(forward, up).normalized();
@@ -115,7 +115,7 @@ struct Transform
         };
     }
 
-    static Matrix4<T> orthographic(T width, T height, T z_near, T z_far)
+    static constexpr Matrix4<T> orthographic(T width, T height, T z_near, T z_far)
     {
         assert(width > 0 && height > 0 && z_near >= 0 && z_far > z_near);
         const T a11 = 2 / width;
