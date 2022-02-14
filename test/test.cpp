@@ -1,15 +1,15 @@
-#include <math/basic.hpp>
+#include <Hinae/basic.hpp>
 
-#include <math/Vector2.hpp>
-#include <math/Vector3.hpp>
+#include <Hinae/Vector2.hpp>
+#include <Hinae/Vector3.hpp>
 
-#include <math/Point2.hpp>
-#include <math/Point3.hpp>
+#include <Hinae/Point2.hpp>
+#include <Hinae/Point3.hpp>
 
-#include <math/Matrix4.hpp>
-#include <math/Triangle.hpp>
+#include <Hinae/Matrix4.hpp>
+#include <Hinae/Triangle.hpp>
 
-#include <math/Transform.hpp>
+#include <Hinae/Transform.hpp>
 
 #include "tools.hpp"
 

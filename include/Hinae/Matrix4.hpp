@@ -81,10 +81,10 @@ public:
 	{
 		Matrix4<T> ret;
 #ifdef USE_SIMD
-        if constexpr(!std::is_same_v<float, T>)
-            static_assert(false, "simd only support float type");
-        else
+        if constexpr(std::is_same_v<f32, T>)
             sse_matrix4x4_mul(data, rhs.data, ret.data);
+        else
+            static_assert(false, "simd only support float type");
 #else
         const Matrix4<T>& lhs = *this;
         T sum;
