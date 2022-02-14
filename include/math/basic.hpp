@@ -134,7 +134,7 @@ constexpr bool is_odd(T x) { return x % 2 != 0; }
 template <std::integral T>
 constexpr bool is_even(T x) { return x % 2 == 0; }
 
-template <arithmetic T>
+template <std::signed_integral T>
 constexpr T abs(T x) { return x >= ZERO<T> ? x : -x; }
 
 template <arithmetic T>
@@ -207,7 +207,7 @@ constexpr T pow5(T x)
 template <template <arithmetic T> typename U, arithmetic T>
 constexpr U<T> lerp(const U<T>& left, const U<T>& right, const T& w)
 {
-    return left * w + (ONE<T> - w) * right;
+    return left + (right - left) * w;
 }
 
 enum class Axis : usize { X = 0, Y = 1, Z = 2 };

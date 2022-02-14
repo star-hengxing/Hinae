@@ -23,21 +23,40 @@ struct Barycentric_Coordinates
         return alpha >= ZERO<T> && beta >= ZERO<T> && gamma >= ZERO<T>;
     }
 
-    void correct(T z1, T z2, T z3)
+    T correct(T z1, T z2, T z3)
     {
         assert(!is_zero(z1) && !is_zero(z2) && !is_zero(z3));
         alpha /= z1;
         beta  /= z2;
         gamma /= z3;
-    }
 
-    T sum() const { return alpha + beta + gamma; }
+        return reciprocal(alpha + beta + gamma);
+    }
 
     template <typename U>
     U interpolated(const U& t1, const U& t2, const U& t3, T w) const
     {
         assert(!std::isnan(w));
         return (t1 * alpha + t2 * beta + t3 * gamma) * w;
+    }
+
+    Point2<T> interpolated(const Point2<T>& t1, const Point2<T>& t2, const Point2<T>& t3, T w) const
+    {
+        return
+        {
+            (alpha * t1.x + beta * t2.x + gamma * t3.x) * w,
+            (alpha * t1.y + beta * t2.y + gamma * t3.y) * w
+        };
+    }
+
+    Point3<T> interpolated(const Point3<T>& t1, const Point3<T>& t2, const Point3<T>& t3, T w) const
+    {
+        return
+        {
+            (alpha * t1.x + beta * t2.x + gamma * t3.x) * w,
+            (alpha * t1.y + beta * t2.y + gamma * t3.y) * w,
+            (alpha * t1.z + beta * t2.z + gamma * t3.z) * w
+        };
     }
 };
 
