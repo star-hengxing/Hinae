@@ -30,13 +30,13 @@ using i32 = int_fast32_t;
 using i64 = int_fast64_t;
 
 using usize = std::size_t;
-using isize = long long;
+using isize = std::make_signed<usize>::type;
 
 using f32 = float;
 using f64 = double;
 
 template <typename T>
-concept arithmetic = std::integral<T> || std::floating_point<T>;
+concept arithmetic = std::is_arithmetic_v<T>;
 
 template <arithmetic T>
 inline constexpr T ZERO = static_cast<T>(0);
@@ -97,6 +97,8 @@ struct Triangle;
 
 template <arithmetic T, u32 a, u32 c, u32 m>
 struct Linear_congruential_generator;
+
+enum class Axis : usize { X = 0, Y = 1, Z = 2 };
 
 template
 <
@@ -208,21 +210,6 @@ template <template <arithmetic T> typename U, arithmetic T>
 constexpr U<T> lerp(const U<T>& left, const U<T>& right, const T& w)
 {
     return left + (right - left) * w;
-}
-
-enum class Axis : usize { X = 0, Y = 1, Z = 2 };
-
-inline std::ostream& operator << (std::ostream& os, Axis axis)
-{
-    switch(axis)
-    {
-        using enum Axis;
-        case  X: os << "Axis::X"; break;
-        case  Y: os << "Axis::Y"; break;
-        case  Z: os << "Axis::Z"; break;
-        default: os << "invalid type";
-    }
-    return os;
 }
 
 template<typename... Ts>
