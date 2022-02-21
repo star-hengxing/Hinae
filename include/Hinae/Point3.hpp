@@ -27,7 +27,7 @@ struct Point3
 
     constexpr Vector3<T> operator - () const { return {-x, -y, -z}; }
 
-    constexpr Point3<T> operator + (const Vector3<T>& v) { return {x + v.x, y + v.y, z + v.z}; }
+    constexpr Point3<T> operator + (const Vector3<T>& v) const { return {x + v.x, y + v.y, z + v.z}; }
 
     constexpr Point3<T> operator += (const Vector3<T>& v) { x += v.x; y += v.y; z += v.z; }
 
