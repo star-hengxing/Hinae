@@ -10,7 +10,7 @@ NAMESPACE_BEGIN(Hinae)
 template <arithmetic T>
 constexpr Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 {
-    const T x = rhs.x, y = rhs.y, z = rhs.z;
+    const auto [x, y, z] = rhs;
     return
     {
         lhs[0][0] * x + lhs[0][1] * y + lhs[0][2] * z,
@@ -22,7 +22,7 @@ constexpr Vector3<T> operator * (const Matrix4<T>& lhs, const Vector3<T>& rhs)
 template <arithmetic T>
 constexpr Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 {
-    const T x  = rhs.x, y = rhs.y, z = rhs.z, w = rhs.w;
+    const auto [x, y, z, w] = rhs;
     return
     {
         lhs[0][0] * x + lhs[0][1] * y + lhs[0][2] * z + lhs[0][3] * w,
@@ -30,6 +30,14 @@ constexpr Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
         lhs[2][0] * x + lhs[2][1] * y + lhs[2][2] * z + lhs[2][3] * w,
         lhs[3][0] * x + lhs[3][1] * y + lhs[3][2] * z + lhs[3][3] * w
     };
+}
+
+template <arithmetic T>
+constexpr Point3<T> operator * (const Matrix4<T>& lhs, const Point3<T>& rhs)
+{
+    constexpr Point4<T> p = lhs * Point4{rhs};
+    constexpr T inv_w = reciprocal(p.w);
+    return {p.x * inv_w, p.y * inv_w, p.z * inv_w};
 }
 
 template <arithmetic T>
@@ -103,9 +111,9 @@ struct Transform
     static constexpr Matrix4<T> look_at(const Point3<T>& pos, const Point3<T>& at, const Vector3<T>& up)
     {
         const Vector3<T> forward = (at - pos).normalized();
-		const Vector3<T> right = cross(forward, up).normalized();
-		const Vector3<T> Up    = cross(right, forward);
-        const auto eye = cast<Vector3>(pos);
+		const Vector3<T> right   = cross(forward, up).normalized();
+		const Vector3<T> Up      = cross(right, forward);
+        const auto eye           = cast<Vector3>(pos);
         return
         {
             right.x, Up.x, -forward.x, -dot(right,   eye),
@@ -117,7 +125,6 @@ struct Transform
 
     static constexpr Matrix4<T> orthographic(T width, T height, T z_near, T z_far)
     {
-        assert(width > 0 && height > 0 && z_near >= 0 && z_far > z_near);
         const T a11 = 2 / width;
         const T a22 = 2 / height;
         const T a32 = 2 / (z_near - z_far);
@@ -133,7 +140,7 @@ struct Transform
 
     static Matrix4<T> perspective(T fov, T aspect, T z_near, T z_far)
     {
-		const T tan = std::tan(to_radian(fov / static_cast<T>(2)));
+		const T tan = std::tan(to_radian(fov / 2));
 		const T cot = 1 / tan;
 
         const T a11 = cot / aspect;
