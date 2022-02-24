@@ -278,13 +278,13 @@ static void transform_test()
 
 	{
 		constexpr Vector3f y{0, 1, 0};
-		constexpr auto angle = PI_OVER_2<f32> / 2;
-		Quaternionf q{std::cos(angle), y * std::sin(angle)};
+		const auto q = Quaternionf::rotate(PI_OVER_2<f32>, y);
 
 		constexpr Vector3f v{0, 0, 5};
 		const auto v1 = Vector3<int>{Transform<f32>::rotate<Axis::Y>(90) * v};
-		const auto v2 = 
-			Vector3{static_cast<int>(std::ceil((Transform<f32>::rotate(q) * v).x)), 0, 0};
+		auto tmp = Transform<f32>::rotate(q) * v;
+		tmp.x = std::ceil(tmp.x);
+		const auto v2 = Vector3<int>{tmp};
 		const auto v3 = Vector3<int>{(q * Quaternion<f32>::pure(v) * q.inverse()).image};
 
 		constexpr Vector3 dst{5, 0, 0};
@@ -378,6 +378,11 @@ static void quaternion_test()
 	static_assert(unit.conjugate().conjugate() == unit);
 
 	static_assert(pure * pure == Quaternion{-14, {0, 0, 0}}) ;
+
+	constexpr Quaternion q1 {1, 2, 3, 4};
+	constexpr Quaternion q2 {5, 6, 7, 8};
+	static_assert(q1 * q2 == Quaternion{-60, 12, 30, 24});
+	static_assert(q2 * q1 == Quaternion{-60, 20, 14, 32});
 }
 
 int main()
