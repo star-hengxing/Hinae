@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Quaternion.hpp"
 #include "Matrix4.hpp"
 #include "Vector3.hpp"
 #include "Point3.hpp"
@@ -35,8 +36,8 @@ constexpr Point4<T> operator * (const Matrix4<T>& lhs, const Point4<T>& rhs)
 template <arithmetic T>
 constexpr Point3<T> operator * (const Matrix4<T>& lhs, const Point3<T>& rhs)
 {
-    constexpr Point4<T> p = lhs * Point4{rhs};
-    constexpr T inv_w = reciprocal(p.w);
+    const Point4<T> p = lhs * Point4{rhs};
+    const T inv_w = reciprocal(p.w);
     return {p.x * inv_w, p.y * inv_w, p.z * inv_w};
 }
 
@@ -66,6 +67,19 @@ struct Transform
             ONE<T>,  ZERO<T>, ZERO<T>, v.x,
             ZERO<T>, ONE<T>,  ZERO<T>, v.y,
             ZERO<T>, ZERO<T>, ONE<T>,  v.z,
+            ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
+        };
+    }
+
+    static constexpr Matrix4<T> rotate(const Quaternion<T>& q)
+    {
+        const T a = q.real;
+        const auto [b, c, d] = q.image;
+        return
+        {
+            1 - 2*c*c-2*d*d, 2*b*c-2*a*d, 2*a*c + 2*b*d, ZERO<T>,
+            2*b*c+2*a*d, 1 - 2*b*b-2*d*d, 2*c*d + 2*a*b, ZERO<T>,
+            2*b*d - 2*a*c, 2*a*b-2*c*d, 1 - 2*b*b-2*c*c, ZERO<T>,
             ZERO<T>, ZERO<T>, ZERO<T>, ONE<T>
         };
     }

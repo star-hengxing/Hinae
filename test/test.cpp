@@ -6,10 +6,13 @@
 #include <Hinae/Point2.hpp>
 #include <Hinae/Point3.hpp>
 
-#include <Hinae/Matrix4.hpp>
 #include <Hinae/Transform.hpp>
+#include <Hinae/Matrix4.hpp>
 
+#include <Hinae/Quaternion.hpp>
 #include <Hinae/Triangle.hpp>
+#include <Hinae/Bounds3.hpp>
+#include <Hinae/Ray3.hpp>
 
 #include "tools.hpp"
 
@@ -259,9 +262,35 @@ static void transform_test()
 	}
 
 	{
-		Transform<f32>::rotate<Axis::X>(30);
-		Transform<f32>::rotate<Axis::Y>(45);
-		Transform<f32>::rotate<Axis::Z>(60);
+		constexpr Vector3 v{1, 2, 3};
+		constexpr auto m = Transform<int>::scale(2);
+		EXPECT_EQ(v * 2, m * v);
+	}
+
+	{
+		constexpr Point3 p{1, 2, 3};
+		constexpr Vector3 offset{-1, -2, -3}; 
+		constexpr auto m = Transform<int>::translate(offset);
+
+		EXPECT_EQ(Point3{0}, m * p);
+		EXPECT_EQ(Point4(0, 0, 0, 1), m * Point4(p));
+	}
+
+	{
+		constexpr Vector3f y{0, 1, 0};
+		constexpr auto angle = PI_OVER_2<f32> / 2;
+		Quaternionf q{std::cos(angle), y * std::sin(angle)};
+
+		constexpr Vector3f v{0, 0, 5};
+		const auto v1 = Vector3<int>{Transform<f32>::rotate<Axis::Y>(90) * v};
+		const auto v2 = 
+			Vector3{static_cast<int>(std::ceil((Transform<f32>::rotate(q) * v).x)), 0, 0};
+		const auto v3 = Vector3<int>{(q * Quaternion<f32>::pure(v) * q.inverse()).image};
+
+		constexpr Vector3 dst{5, 0, 0};
+		EXPECT_EQ(dst, v1);
+		EXPECT_EQ(dst, v2);
+		EXPECT_EQ(dst, v3);
 	}
 }
 
@@ -288,6 +317,69 @@ static void triangle_test()
 	EXPECT_EQ(false, t.barycentric2D(Point2f{2, 2}).is_inside());
 }
 
+static void bounds3_test()
+{
+	constexpr auto p1 = Point3{0}, p2 = Point3{10};
+	constexpr Bounds3 b{p1, p2};
+
+	EXPECT_EQ(p1, b[0]);
+	EXPECT_EQ(p2, b[1]);
+
+	static_assert(b.inside(p1) == true);
+	static_assert(b.inside(p2) == true);
+	static_assert(b.inside(Point3{5}) == true);
+	static_assert(b.inside(Point3{11}) == false);
+	static_assert(b.inside(Point3{-1}) == false);
+
+	static_assert(b.diagonal() == p2 - p1);
+
+	constexpr Bounds3 b1{p1, Point3{5, 10, 15}};
+	static_assert(b1.max_extent() == Axis::Z);
+
+	static_assert(b.centroid() == Point3{5});
+	static_assert(b.surface_area() == 600);
+	static_assert(Union(b, Point3{5}) == b);
+	static_assert(Union(Bounds3{p1}, Bounds3{p2}) == b);
+	
+	constexpr Bounds3 b2{p1, Point3{4}};
+	constexpr Bounds3 b3{Point3{2}, p2};
+	static_assert(intersect(b2, b3) == Bounds3{Point3{2}, Point3{4}});
+	static_assert(overlaps(b2, b3) == true);
+}
+
+static void ray3_test()
+{
+	constexpr Ray3 ray{Point3{0, 0, 0}, Vector3{1, 2, 3}};
+	constexpr auto t = 2;
+	constexpr auto p = Point3{2, 4, 6};
+	
+	static_assert(ray.at(t) 		 == p);
+	static_assert(ray.inv_at(p) 	 == t);
+	static_assert(ray.at<Axis::X>(2) == 2);
+	static_assert(ray.at<Axis::Y>(2) == 4);
+	static_assert(ray.at<Axis::Z>(2) == 6);
+}
+
+static void quaternion_test()
+{
+	constexpr auto v = Vector3{1, 2, 3};
+	constexpr auto real = 2;
+	constexpr auto q = Quaternion{real, v};
+	static_assert(q + 2 == Quaternion{4, {3, 4, 5}});
+	static_assert(q * 2 == Quaternion{4, {2, 4, 6}});
+	static_assert(q.conjugate() == Quaternion{real, -v});
+	static_assert(q.norm2() == 18);
+
+	constexpr auto pure = Quaternion<int>::pure(v);
+	static_assert(pure == Quaternion{0, v});
+	constexpr auto unit = Quaternion{1, {0, 0, 0}};
+	EXPECT_EQ(1, unit.norm());
+	static_assert(unit.inverse() == unit.conjugate());
+	static_assert(unit.conjugate().conjugate() == unit);
+
+	static_assert(pure * pure == Quaternion{-14, {0, 0, 0}}) ;
+}
+
 int main()
 {
 	base_test();
@@ -301,7 +393,10 @@ int main()
 	matrix4_test();
 	transform_test();
 
+	quaternion_test();
 	triangle_test();
+	bounds3_test();
+	ray3_test();
 
 	TEST_RESULT();
 }

@@ -95,6 +95,15 @@ struct Matrix4;
 template <arithmetic T>
 struct Triangle;
 
+template <arithmetic T>
+struct Ray3;
+
+template <arithmetic T>
+struct Bounds3;
+
+template <arithmetic T>
+struct Quaternion;
+
 template <arithmetic T, u32 a, u32 c, u32 m>
 struct Linear_congruential_generator;
 
@@ -140,15 +149,21 @@ template <std::signed_integral T>
 constexpr T abs(T x) { return x >= ZERO<T> ? x : -x; }
 
 template <arithmetic T>
-constexpr T max(T x, T y, T z)
-{
-    return (x > y) ? ( x > z ? x : z ) : ( y > z ? y : z );
-}
-
-template <arithmetic T>
 constexpr T max(T x, T y)
 {
     return (x > y ? x : y);
+}
+
+template <arithmetic T>
+constexpr T min(T x, T y)
+{
+    return (x < y ? x : y);
+}
+
+template <arithmetic T>
+constexpr T max(T x, T y, T z)
+{
+    return (x > y) ? ( x > z ? x : z ) : ( y > z ? y : z );
 }
 
 template <arithmetic T>
@@ -157,10 +172,34 @@ constexpr T min(T x, T y, T z)
     return (x < y) ? ( x < z ? x : z ) : ( y < z ? y : z );
 }
 
-template <arithmetic T>
-constexpr T min(T x, T y)
+template <template <arithmetic T> typename G, arithmetic T>
+constexpr G<T> max(const G<T>& g1, const G<T>& g2)
 {
-    return (x < y ? x : y);
+    static_assert(sizeof(g1) == sizeof(g2));
+    if constexpr(sizeof(g1) == sizeof(T) * 2)
+    {
+        return {max(g1.x, g2.x), max(g1.y, g2.y)};
+    }
+    else
+    {
+        static_assert(sizeof(g1) == sizeof(T) * 3);
+        return {max(g1.x, g2.x), max(g1.y, g2.y), max(g1.z, g2.z)};
+    }
+}
+
+template <template <arithmetic T> typename G, arithmetic T>
+constexpr G<T> min(const G<T>& g1, const G<T>& g2)
+{
+    static_assert(sizeof(g1) == sizeof(g2));
+    if constexpr(sizeof(g1) == sizeof(T) * 2)
+    {
+        return {min(g1.x, g2.x), min(g1.y, g2.y)};
+    }
+    else
+    {
+        static_assert(sizeof(g1) == sizeof(T) * 3);
+        return {min(g1.x, g2.x), min(g1.y, g2.y), min(g1.z, g2.z)};
+    }
 }
 
 template <arithmetic T>
