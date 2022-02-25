@@ -40,4 +40,10 @@ struct Ray3
     }
 };
 
+template <arithmetic T>
+std::ostream& operator << (std::ostream& os, const Ray3<T>& ray)
+{
+    return os << std::make_tuple(ray.point, ray.direction);
+}
+
 NAMESPACE_END(Hinae)

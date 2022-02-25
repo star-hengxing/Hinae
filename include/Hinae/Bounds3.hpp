@@ -20,8 +20,8 @@ struct Bounds3
     constexpr Bounds3(const Point3<T>& p) : p_min(p), p_max(p) {}
 
     constexpr Bounds3(const Point3<T>& p1, const Point3<T>& p2)
-        : p_min({min(p1.x, p2.x), min(p1.y, p2.y), min(p1.z, p2.z)})
-        , p_max({max(p1.x, p2.x), max(p1.y, p2.y), max(p1.z, p2.z)}) {}
+        : p_min(min(p1, p2))
+        , p_max(max(p1, p2)) {}
 
     const Point3<T>& operator [] (usize i) const
     {
@@ -50,9 +50,9 @@ struct Bounds3
     {
         return
         {
-            p_min.x / 2 + p_max.x / 2,
-            p_min.y / 2 + p_max.y / 2,
-            p_min.z / 2 + p_max.z / 2
+            (p_min.x + p_max.x) / 2,
+            (p_min.y + p_max.y) / 2,
+            (p_min.z + p_max.z) / 2
         };
     }
 
@@ -88,6 +88,12 @@ overlaps(const Bounds3<T>& b1, const Bounds3<T>& b2)
     bool y = b1.p_max.y >= b2.p_min.y && b1.p_min.y <= b2.p_max.y;
     bool z = b1.p_max.z >= b2.p_min.z && b1.p_min.z <= b2.p_max.z;
     return x && y && z;
+}
+
+template <arithmetic T>
+std::ostream& operator << (std::ostream& os, const Bounds3<T>& b)
+{
+    return os << std::make_tuple(b.p_min, b.p_max);
 }
 
 NAMESPACE_END(Hinae)

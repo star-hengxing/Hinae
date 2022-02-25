@@ -5,6 +5,7 @@
 #include "Vector3.hpp"
 #include "Point3.hpp"
 #include "Point4.hpp"
+#include "Ray3.hpp"
 
 NAMESPACE_BEGIN(Hinae)
 
@@ -39,6 +40,16 @@ constexpr Point3<T> operator * (const Matrix4<T>& lhs, const Point3<T>& rhs)
     const Point4<T> p = lhs * Point4{rhs};
     const T inv_w = reciprocal(p.w);
     return {p.x * inv_w, p.y * inv_w, p.z * inv_w};
+}
+
+template <arithmetic T>
+constexpr Ray3<T> operator * (const Matrix4<T>& lhs, const Ray3<T>& rhs)
+{
+    return
+    {
+        lhs * rhs.point,
+        lhs * rhs.direction
+    };
 }
 
 template <arithmetic T>
