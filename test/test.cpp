@@ -24,22 +24,18 @@ static void base_test()
 	static_assert(ONE<decltype(1)>  == 1);
 	
 	static_assert(is_zero(0)  == true);
-	static_assert(is_zero(-0) == true);
 	static_assert(is_zero(1)  == false);
 	static_assert(is_zero(-1) == false);
 
 	static_assert(is_one(0)  == false);
-	static_assert(is_one(-0) == false);
 	static_assert(is_one(1)  == true);
 	static_assert(is_one(-1) == false);
 
 	static_assert(is_odd(0)  == false);
-	static_assert(is_odd(-0) == false);
 	static_assert(is_odd(1)  == true);
 	static_assert(is_odd(-1) == true);
 	
 	static_assert(is_even(0)  == true);
-	static_assert(is_even(-0) == true);
 	static_assert(is_even(1)  == false);
 	static_assert(is_even(-1) == false);
 

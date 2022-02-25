@@ -38,6 +38,9 @@ using f64 = double;
 template <typename T>
 concept arithmetic = std::is_arithmetic_v<T>;
 
+template <typename T>
+concept signed_numeric = std::is_signed_v<T>;
+
 template <arithmetic T>
 inline constexpr T ZERO = static_cast<T>(0);
 
@@ -163,13 +166,13 @@ constexpr T min(T x, T y)
 template <arithmetic T>
 constexpr T max(T x, T y, T z)
 {
-    return (x > y) ? ( x > z ? x : z ) : ( y > z ? y : z );
+    return max(x, max(y, z));
 }
 
 template <arithmetic T>
 constexpr T min(T x, T y, T z)
 {
-    return (x < y) ? ( x < z ? x : z ) : ( y < z ? y : z );
+    return min(x, min(y, z));
 }
 
 template <template <arithmetic T> typename G, arithmetic T>
@@ -210,7 +213,7 @@ constexpr T clamp(T low, T value, T high)
     else                   return value;
 }
 
-template <arithmetic T>
+template <signed_numeric T>
 constexpr T sign(T x)
 {
     if(x > ZERO<T>)      return ONE<T>;
