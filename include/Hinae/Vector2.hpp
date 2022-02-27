@@ -79,6 +79,16 @@ struct Vector2
         assert(i <= 1);
         return (&x)[i];
     }
+
+    T operator [] (Axis axis) const
+    { 
+        return (&x)[static_cast<usize>(axis)];
+    }
+
+    T& operator [] (Axis axis)
+    { 
+        return (&x)[static_cast<usize>(axis)];
+    }
 };
 
 template <arithmetic T>

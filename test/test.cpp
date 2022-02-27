@@ -105,6 +105,9 @@ static void vector3_test()
 	EXPECT_EQ(0, v1[0]);
 	EXPECT_EQ(1, v1[1]);
 	EXPECT_EQ(2, v1[2]);
+	EXPECT_EQ(0, v1[Axis::X]);
+	EXPECT_EQ(1, v1[Axis::Y]);
+	EXPECT_EQ(2, v1[Axis::Z]);
 
 	static_assert(dot(v1, v2)   == 20);
 	static_assert(cross(v1, v2) == Vector3{0, 4, -2});
@@ -144,6 +147,8 @@ static void vector2_test()
 
 	EXPECT_EQ(0, v1[0]);
 	EXPECT_EQ(1, v1[1]);
+	EXPECT_EQ(0, v1[Axis::X]);
+	EXPECT_EQ(1, v1[Axis::Y]);
 
 	static_assert(dot(v1, v2)   == 2);
 	static_assert(cross(v1, v2) == -4);
@@ -169,6 +174,9 @@ static void point3_test()
 	EXPECT_EQ(0, p1[0]);
 	EXPECT_EQ(1, p1[1]);
 	EXPECT_EQ(2, p1[2]);
+	EXPECT_EQ(0, p1[Axis::X]);
+	EXPECT_EQ(1, p1[Axis::Y]);
+	EXPECT_EQ(2, p1[Axis::Z]);
 }
 
 static void point2_test()
@@ -187,6 +195,8 @@ static void point2_test()
 
 	EXPECT_EQ(0, p1[0]);
 	EXPECT_EQ(1, p2[1]);
+	EXPECT_EQ(0, p1[Axis::X]);
+	EXPECT_EQ(1, p2[Axis::Y]);
 }
 
 static void matrix4_test()
