@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <array>
 
-#include "basic.hpp"
+#include "Vector3.hpp"
 
 NAMESPACE_BEGIN(Hinae)
 
@@ -59,6 +59,16 @@ public:
 
     template <arithmetic... U>
 	constexpr Matrix4(U... args) : data{ static_cast<T>(args)... } {}
+
+    constexpr Vector3<T> column(usize i) const
+    {
+        return {data[i], data[4 + i], data[8 + i]}; 
+    }
+
+    constexpr Vector3<T> row(usize i) const
+    {
+        return {data[i * 4], data[i * 4 + 1], data[i * 4 + 2]}; 
+    }
 
     constexpr Matrix4<T>& operator *= (T rhs)
     {

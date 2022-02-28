@@ -202,6 +202,24 @@ static void point2_test()
 static void matrix4_test()
 {
 	{
+		constexpr Matrix4i m1
+		{
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15, 16
+		};
+		static_assert(Vector3i{1, 2, 3}    == m1.row(0));
+		static_assert(Vector3i{5, 6, 7}    == m1.row(1));
+		static_assert(Vector3i{9, 10, 11}  == m1.row(2));
+		static_assert(Vector3i{13, 14, 15} == m1.row(3));
+		static_assert(Vector3i{1, 5, 9}    == m1.column(0));
+		static_assert(Vector3i{2, 6, 10}   == m1.column(1));
+		static_assert(Vector3i{3, 7, 11}   == m1.column(2));
+		static_assert(Vector3i{4, 8, 12}   == m1.column(3));
+	}
+
+	{
 		constexpr auto m1 = Matrix4i::identity();
 		constexpr Matrix4i m2
 		{

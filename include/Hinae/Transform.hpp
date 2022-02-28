@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Quaternion.hpp"
+#include "Bounds3.hpp"
 #include "Matrix4.hpp"
 #include "Vector3.hpp"
 #include "Point3.hpp"
@@ -49,6 +50,23 @@ constexpr Ray3<T> operator * (const Matrix4<T>& lhs, const Ray3<T>& rhs)
     {
         lhs * rhs.point,
         lhs * rhs.direction
+    };
+}
+
+template <arithmetic T>
+constexpr Bounds3<T> operator * (const Matrix4<T>& lhs, const Bounds3<T>& rhs)
+{
+    const Vector3<T> xa = lhs.column(0) * rhs.p_min.x;
+    const Vector3<T> xb = lhs.column(0) * rhs.p_max.x;
+    const Vector3<T> ya = lhs.column(1) * rhs.p_min.y;
+    const Vector3<T> yb = lhs.column(1) * rhs.p_max.y;
+    const Vector3<T> za = lhs.column(2) * rhs.p_min.z;
+    const Vector3<T> zb = lhs.column(2) * rhs.p_max.z;
+    const auto translate = cast<Point3>(lhs.column(3));
+    return
+    {
+        translate + (min(xa, xb) + min(ya, yb) + min(za, zb)),
+        translate + (max(xa, xb) + max(ya, yb) + max(za, zb))
     };
 }
 
