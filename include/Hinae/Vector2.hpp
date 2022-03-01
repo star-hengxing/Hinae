@@ -36,23 +36,23 @@ struct Vector2
     constexpr Vector2<T> operator * (const Vector2<T>& rhs) const { return {x * rhs.x, y * rhs.y}; }
     constexpr Vector2<T> operator / (const Vector2<T>& rhs) const { return {x / rhs.x, y / rhs.y}; }
 
-    void operator += (T rhs) { x += rhs; y += rhs; }
-    void operator -= (T rhs) { x -= rhs; y -= rhs; }
-    void operator *= (T rhs) { x *= rhs; y *= rhs; }
-    void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
+    constexpr void operator += (T rhs) { x += rhs; y += rhs; }
+    constexpr void operator -= (T rhs) { x -= rhs; y -= rhs; }
+    constexpr void operator *= (T rhs) { x *= rhs; y *= rhs; }
+    constexpr void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
 
-    void operator += (const Vector2<T>& rhs) { x += rhs.x; y += rhs.y; }
-    void operator -= (const Vector2<T>& rhs) { x -= rhs.x; y -= rhs.y; }
-    void operator *= (const Vector2<T>& rhs) { x *= rhs.x; y *= rhs.y; }
-    void operator /= (const Vector2<T>& rhs) { x /= rhs.x; y /= rhs.y; }
+    constexpr void operator += (const Vector2<T>& rhs) { x += rhs.x; y += rhs.y; }
+    constexpr void operator -= (const Vector2<T>& rhs) { x -= rhs.x; y -= rhs.y; }
+    constexpr void operator *= (const Vector2<T>& rhs) { x *= rhs.x; y *= rhs.y; }
+    constexpr void operator /= (const Vector2<T>& rhs) { x /= rhs.x; y /= rhs.y; }
 
     constexpr T norm2() const { return x * x + y * y; }
-    T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
+    constexpr T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
 
-    void normalize() { (*this) *= reciprocal(norm()); }
-    Vector2<T> normalized() const { return (*this) * reciprocal(norm()); }
+    constexpr void normalize() { (*this) *= reciprocal(norm()); }
+    constexpr Vector2<T> normalized() const { return (*this) * reciprocal(norm()); }
 
-    Vector2<T> abs() const
+    constexpr Vector2<T> abs() const
     {
         if constexpr(std::is_same_v<f32, T> || std::is_same_v<f64, T>)
             return {std::abs(x), std::abs(y)};

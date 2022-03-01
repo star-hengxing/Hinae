@@ -37,23 +37,23 @@ struct Vector3
     constexpr Vector3<T> operator * (const Vector3<T>& rhs) const { return {x * rhs.x, y * rhs.y, z * rhs.z}; }
     constexpr Vector3<T> operator / (const Vector3<T>& rhs) const { return {x / rhs.x, y / rhs.y, z / rhs.z}; }
 
-    void operator += (T rhs) { x += rhs; y += rhs; z += rhs; }
-    void operator -= (T rhs) { x -= rhs; y -= rhs; z -= rhs; }
-    void operator *= (T rhs) { x *= rhs; y *= rhs; z *= rhs; }
-    void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
+    constexpr void operator += (T rhs) { x += rhs; y += rhs; z += rhs; }
+    constexpr void operator -= (T rhs) { x -= rhs; y -= rhs; z -= rhs; }
+    constexpr void operator *= (T rhs) { x *= rhs; y *= rhs; z *= rhs; }
+    constexpr void operator /= (T rhs) { (*this) *= reciprocal(rhs); }
 
-    void operator += (const Vector3<T>& rhs) { x += rhs.x; y += rhs.y; z += rhs.z; }
-    void operator -= (const Vector3<T>& rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; }
-    void operator *= (const Vector3<T>& rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; }
-    void operator /= (const Vector3<T>& rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; }
+    constexpr void operator += (const Vector3<T>& rhs) { x += rhs.x; y += rhs.y; z += rhs.z; }
+    constexpr void operator -= (const Vector3<T>& rhs) { x -= rhs.x; y -= rhs.y; z -= rhs.z; }
+    constexpr void operator *= (const Vector3<T>& rhs) { x *= rhs.x; y *= rhs.y; z *= rhs.z; }
+    constexpr void operator /= (const Vector3<T>& rhs) { x /= rhs.x; y /= rhs.y; z /= rhs.z; }
 
     constexpr T norm2() const { return x * x + y * y + z * z; }
     T norm()  const { return static_cast<T>(std::sqrt(norm2())); }
 
-    void normalize() { (*this) /= norm(); }
-    Vector3<T> normalized() const { return (*this) / norm(); }
+    constexpr void normalize() { (*this) /= norm(); }
+    constexpr Vector3<T> normalized() const { return (*this) / norm(); }
 
-    Vector3<T> abs() const
+    constexpr Vector3<T> abs() const
     {
         if constexpr(std::is_same_v<f32, T> || std::is_same_v<f64, T>)
             return {std::abs(x), std::abs(y), std::abs(z)};
