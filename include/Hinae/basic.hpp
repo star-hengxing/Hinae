@@ -96,9 +96,6 @@ template <arithmetic T>
 struct Matrix4;
 
 template <arithmetic T>
-struct Triangle;
-
-template <arithmetic T>
 struct Ray3;
 
 template <arithmetic T>
@@ -114,26 +111,16 @@ enum class Axis : usize { X = 0, Y = 1, Z = 2 };
 
 template
 <
-	template <arithmetic T> typename To,
-	template <arithmetic T> typename From,
-    arithmetic T
+	template <arithmetic> typename To,   arithmetic U,
+	template <arithmetic> typename From, arithmetic T
 >
-constexpr To<T> cast(const From<T>& geometry)
+constexpr To<U> as(const From<T>& from)
 {
-	static_assert(sizeof(To<T>) <= sizeof(From<T>));
-	if constexpr(sizeof(To<T>) == sizeof(T) * 2)
-	{
-		return To<T>(geometry.x, geometry.y);
-	}
-	else if constexpr(sizeof(To<T>) == sizeof(T) * 3)
-	{
-		return To<T>(geometry.x, geometry.y, geometry.z);
-	}
-	else
-	{
-		static_assert(sizeof(To<T>) == sizeof(T) * 4);
-		return To<T>(geometry.x, geometry.y, geometry.z, ONE<T>);
-	}
+	static_assert(sizeof(To<U>) / sizeof(U) <= sizeof(From<T>) / sizeof(T));
+	To<U> to;
+    for(usize i = 0; i < sizeof(To<U>) / sizeof(U); i++)
+        to[i] = static_cast<U>(from[i]);
+    return to;
 }
 
 template <arithmetic T>
@@ -175,34 +162,59 @@ constexpr T min(T x, T y, T z)
     return min(x, min(y, z));
 }
 
-template <template <arithmetic T> typename G, arithmetic T>
-constexpr G<T> max(const G<T>& g1, const G<T>& g2)
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> max(const T<U>& g1, const T<U>& g2)
 {
-    static_assert(sizeof(g1) == sizeof(g2));
-    if constexpr(sizeof(g1) == sizeof(T) * 2)
+    if constexpr(sizeof(T<U>) / sizeof(U) == 2)
     {
         return {max(g1.x, g2.x), max(g1.y, g2.y)};
     }
     else
     {
-        static_assert(sizeof(g1) == sizeof(T) * 3);
+        static_assert(sizeof(T<U>) / sizeof(U) ==  3);
         return {max(g1.x, g2.x), max(g1.y, g2.y), max(g1.z, g2.z)};
     }
 }
 
-template <template <arithmetic T> typename G, arithmetic T>
-constexpr G<T> min(const G<T>& g1, const G<T>& g2)
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> min(const T<U>& g1, const T<U>& g2)
 {
-    static_assert(sizeof(g1) == sizeof(g2));
-    if constexpr(sizeof(g1) == sizeof(T) * 2)
+    if constexpr(sizeof(T<U>) / sizeof(U) == 2)
     {
         return {min(g1.x, g2.x), min(g1.y, g2.y)};
     }
     else
     {
-        static_assert(sizeof(g1) == sizeof(T) * 3);
+        static_assert(sizeof(T<U>) / sizeof(U) ==  3);
         return {min(g1.x, g2.x), min(g1.y, g2.y), min(g1.z, g2.z)};
     }
+}
+
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> abs(const T<U>& x)
+{
+    T<U> ret;
+    for(usize i = 0; i < sizeof(T<U>) / sizeof(U); i++)
+        ret[i] = std::abs(x[i]);
+    return ret;
+}
+
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> ceil(const T<U>& x)
+{
+    T<U> ret;
+    for(usize i = 0; i < sizeof(T<U>) / sizeof(U); i++)
+        ret[i] = std::ceil(x[i]);
+    return ret;
+}
+
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> floor(const T<U>& x)
+{
+    T<U> ret;
+    for(usize i = 0; i < sizeof(T<U>) / sizeof(U); i++)
+        ret[i] = std::floor(x[i]);
+    return ret;
 }
 
 template <arithmetic T>

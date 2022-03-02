@@ -10,7 +10,6 @@
 #include <Hinae/Matrix4.hpp>
 
 #include <Hinae/Quaternion.hpp>
-#include <Hinae/Triangle.hpp>
 #include <Hinae/Bounds3.hpp>
 #include <Hinae/Ray3.hpp>
 
@@ -95,7 +94,7 @@ static void vector3_test()
 	static_assert(v2.norm2() == 84);
 	EXPECT_EQ(5, Vector3(3, 4, 0).norm());
 
-	EXPECT_EQ(Vector3(1, 1, 1), Vector3(-1, -1, -1).abs());
+	EXPECT_EQ(Vector3(1, 1, 1), abs(Vector3(-1, -1, -1)));
 
 	static_assert(v1.max_component() == 2);
 	static_assert(v1.min_component() == 0);
@@ -138,7 +137,7 @@ static void vector2_test()
 	static_assert(v2.norm2() == 20);
 	EXPECT_EQ(5, Vector2(3, 4).norm());
 
-	EXPECT_EQ(Vector2(1, 1), Vector2(-1, -1).abs());
+	EXPECT_EQ(Vector2(1, 1), abs(Vector2(-1, -1)));
 
 	static_assert(v1.max_component() == 1);
 	static_assert(v1.min_component() == 0);
@@ -318,29 +317,6 @@ static void transform_test()
 	}
 }
 
-static void triangle_test()
-{
-	f32 n = 2;
-	Triangle t
-	{
-		Point3f{n, 0, 0},
-		Point3f{0, n, 0},
-		Point3f{0, 0, 0}
-	};
-
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.25, 0.25}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.75, 0.5}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 0.5}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 0.75}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.75, 0.75}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{1.25, 0.25}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.25, 1.25}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{1.5, 0.5}).is_inside());
-	EXPECT_EQ(true, t.barycentric2D(Point2f{0.5, 1.5}).is_inside());
-
-	EXPECT_EQ(false, t.barycentric2D(Point2f{2, 2}).is_inside());
-}
-
 static void bounds3_test()
 {
 	constexpr auto p1 = Point3{0}, p2 = Point3{10};
@@ -423,7 +399,6 @@ int main()
 	transform_test();
 
 	quaternion_test();
-	triangle_test();
 	bounds3_test();
 	ray3_test();
 

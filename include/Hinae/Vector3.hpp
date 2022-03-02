@@ -53,14 +53,6 @@ struct Vector3
     constexpr void normalize() { (*this) /= norm(); }
     constexpr Vector3<T> normalized() const { return (*this) / norm(); }
 
-    constexpr Vector3<T> abs() const
-    {
-        if constexpr(std::is_same_v<f32, T> || std::is_same_v<f64, T>)
-            return {std::abs(x), std::abs(y), std::abs(z)};
-        else
-            return {Hinae::abs(x), Hinae::abs(y), Hinae::abs(y)};
-    }
-
     constexpr T max_component() const { return max(x, y, z); }
 
     constexpr T min_component() const { return min(x, y, z); }

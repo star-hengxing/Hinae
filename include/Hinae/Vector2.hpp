@@ -52,14 +52,6 @@ struct Vector2
     constexpr void normalize() { (*this) *= reciprocal(norm()); }
     constexpr Vector2<T> normalized() const { return (*this) * reciprocal(norm()); }
 
-    constexpr Vector2<T> abs() const
-    {
-        if constexpr(std::is_same_v<f32, T> || std::is_same_v<f64, T>)
-            return {std::abs(x), std::abs(y)};
-        else
-            return {Hinae::abs(x), Hinae::abs(y)};
-    }
-
     constexpr T max_component() const { return max(x, y); }
 
     constexpr T min_component() const { return min(x, y); }

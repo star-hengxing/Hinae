@@ -21,7 +21,7 @@ local_coordinate_system(const Vector3<T>& v1)
 template <arithmetic T>
 constexpr Point3<T> cartesian_to_spherical(const Point3<T>& p)
 {
-    const auto v = cast<Vector3>(p);
+    const auto v = as<Vector3, T>(p);
     const auto& [x, y, z] = v;
 
     const T radius = v.norm();

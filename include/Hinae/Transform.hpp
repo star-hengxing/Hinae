@@ -62,7 +62,7 @@ constexpr Bounds3<T> operator * (const Matrix4<T>& lhs, const Bounds3<T>& rhs)
     const Vector3<T> yb = lhs.column(1) * rhs.p_max.y;
     const Vector3<T> za = lhs.column(2) * rhs.p_min.z;
     const Vector3<T> zb = lhs.column(2) * rhs.p_max.z;
-    const auto translate = cast<Point3>(lhs.column(3));
+    const auto translate = as<Point3, T>(lhs.column(3));
     return
     {
         translate + (min(xa, xb) + min(ya, yb) + min(za, zb)),
@@ -156,7 +156,7 @@ struct Transform
         const Vector3<T> forward = (at - pos).normalized();
 		const Vector3<T> right   = cross(forward, up).normalized();
 		const Vector3<T> Up      = cross(right, forward);
-        const auto eye           = cast<Vector3>(pos);
+        const auto eye           = as<Vector3, T>(pos);
         return
         {
             right.x, Up.x, -forward.x, -dot(right,   eye),
