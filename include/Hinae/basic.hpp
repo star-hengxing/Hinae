@@ -217,6 +217,12 @@ constexpr T<U> floor(const T<U>& x)
     return ret;
 }
 
+template <template <arithmetic> typename T, arithmetic U, typename W>
+constexpr T<U> lerp(const T<U>& left, const T<U>& right, const W& w)
+{
+    return left + (right - left) * w;
+}
+
 template <arithmetic T>
 constexpr T clamp(T low, T value, T high)
 {
@@ -258,12 +264,6 @@ constexpr T pow5(T x)
 {
     const T x2 = x * x;
     return x2 * x2 * x;
-}
-
-template <template <arithmetic T> typename U, arithmetic T>
-constexpr U<T> lerp(const U<T>& left, const U<T>& right, const T& w)
-{
-    return left + (right - left) * w;
 }
 
 template<typename... Ts>

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Point3.hpp"
 #include "Vector3.hpp"
+#include "Point3.hpp"
+#include "Ray3.hpp"
 
 NAMESPACE_BEGIN(Hinae)
 
@@ -60,6 +61,17 @@ struct Bounds3
     {
         const auto [x, y, z] = diagonal();
         return 2 * (x * y + x * z + y * z);
+    }
+
+    constexpr bool intersect(const Ray3<T> &ray, const Vector3<T>& inv_dir) const
+    {
+        const Vector3<T> min_t = (p_min - ray.point) * inv_dir;
+        const Vector3<T> max_t = (p_max - ray.point) * inv_dir;
+
+        const T enter = min(min_t, max_t).max_component();
+        const T exit  = max(min_t, max_t).min_component();
+
+        return enter <= exit && exit > 0;
     }
 };
 
