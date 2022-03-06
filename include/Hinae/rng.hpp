@@ -4,6 +4,8 @@
 
 #include <ctime>
 
+#include <random>
+
 NAMESPACE_BEGIN(Hinae)
 
 template <arithmetic T>
@@ -29,6 +31,30 @@ private:
     static constexpr u32 increment = C;
     static constexpr u32 modulus = M;
     u32 seed;
+};
+
+template <std::floating_point T>
+struct RNG
+{
+private:
+    std::mt19937 rng;
+    std::uniform_real_distribution<T> dist;
+
+public:
+    RNG(u32 seed) : rng(seed) {}
+    
+    RNG() : RNG(std::random_device{}()) {}
+
+    RNG(const RNG<T>&) = delete;
+    RNG<T>& operator = (const RNG<T>&) = delete;
+    
+    T get() { return dist(rng); }
+
+    RNG<T> clone() const noexcept
+    {
+        RNG<T> ret;
+        return ret;
+    }
 };
 
 NAMESPACE_END(Hinae)
