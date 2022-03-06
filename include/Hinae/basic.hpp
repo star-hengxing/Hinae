@@ -217,6 +217,15 @@ constexpr T<U> floor(const T<U>& x)
     return ret;
 }
 
+template <template <arithmetic> typename T, arithmetic U>
+constexpr T<U> pow(const T<U>& x, U exp)
+{
+    T<U> ret;
+    for(usize i = 0; i < sizeof(T<U>) / sizeof(U); i++)
+        ret[i] = std::pow(x[i], exp);
+    return ret;
+}
+
 template <template <arithmetic> typename T, arithmetic U, typename W>
 constexpr T<U> lerp(const T<U>& left, const T<U>& right, const W& w)
 {
