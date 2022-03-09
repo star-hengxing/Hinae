@@ -353,11 +353,15 @@ static void ray3_test()
 	constexpr auto t = 2;
 	constexpr auto p = Point3{2, 4, 6};
 	
-	static_assert(ray.at(t) 		 == p);
-	static_assert(ray.inv_at(p) 	 == t);
-	static_assert(ray.at<Axis::X>(2) == 2);
-	static_assert(ray.at<Axis::Y>(2) == 4);
-	static_assert(ray.at<Axis::Z>(2) == 6);
+	EXPECT_EQ(t, ray.inv_at<Axis::X>(p[Axis::X]));
+	EXPECT_EQ(t, ray.inv_at<Axis::Y>(p[Axis::Y]));
+	EXPECT_EQ(t, ray.inv_at<Axis::Z>(p[Axis::Z]));
+
+	EXPECT_EQ(2, ray.at<Axis::X>(2));
+	EXPECT_EQ(4, ray.at<Axis::Y>(2));
+	EXPECT_EQ(6, ray.at<Axis::Z>(2));
+
+	static_assert(ray.at(t) == p);
 }
 
 static void quaternion_test()

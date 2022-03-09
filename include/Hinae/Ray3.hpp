@@ -22,21 +22,16 @@ struct Ray3
 
     constexpr Point3<T> at(T t) const { return point + direction * t; }
     
-    constexpr T inv_at(const Point3<T>& p) const
+    template <Axis axis>
+    constexpr T inv_at(T v) const
     {
-        assert(!is_zero(direction.x));
-        return (p.x - point.x) / direction.x;
+        return (v - point[axis]) / direction[axis];
     }
 
     template <Axis axis>
     constexpr T at(T t) const
     {
-        if constexpr(axis == Axis::X)
-            return point.x + direction.x * t;
-        else if constexpr(axis == Axis::Y)
-            return point.y + direction.y * t;
-        else if constexpr(axis == Axis::Z)
-            return point.z + direction.z * t;
+        return point[axis] + direction[axis] * t;
     }
 };
 
