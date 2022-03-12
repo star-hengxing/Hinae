@@ -12,33 +12,33 @@ using Ray3i = Ray3<isize>;
 template <arithmetic T>
 struct Ray3
 {
-    Point3<T> point;
+    Point3<T> origin;
     Vector3<T> direction;
 
     constexpr Ray3() = default;
-    constexpr Ray3(const Point3<T>& point, const Vector3<T>& direction)
-        : point(point)
+    constexpr Ray3(const Point3<T>& origin, const Vector3<T>& direction)
+        : origin(origin)
         , direction(direction) {}
 
-    constexpr Point3<T> at(T t) const { return point + direction * t; }
+    constexpr Point3<T> at(T t) const { return origin + direction * t; }
     
     template <Axis axis>
     constexpr T inv_at(T v) const
     {
-        return (v - point[axis]) / direction[axis];
+        return (v - origin[axis]) / direction[axis];
     }
 
     template <Axis axis>
     constexpr T at(T t) const
     {
-        return point[axis] + direction[axis] * t;
+        return origin[axis] + direction[axis] * t;
     }
 };
 
 template <arithmetic T>
 std::ostream& operator << (std::ostream& os, const Ray3<T>& ray)
 {
-    return os << std::make_tuple(ray.point, ray.direction);
+    return os << std::make_tuple(ray.origin, ray.direction);
 }
 
 NAMESPACE_END(Hinae)

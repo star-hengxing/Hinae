@@ -65,8 +65,8 @@ struct Bounds3
 
     constexpr bool intersect(const Ray3<T> &ray, const Vector3<T>& inv_dir) const
     {
-        const Vector3<T> min_t = (p_min - ray.point) * inv_dir;
-        const Vector3<T> max_t = (p_max - ray.point) * inv_dir;
+        const Vector3<T> min_t = (p_min - ray.origin) * inv_dir;
+        const Vector3<T> max_t = (p_max - ray.origin) * inv_dir;
 
         const T enter = min(min_t, max_t).max_component();
         const T exit  = max(min_t, max_t).min_component();

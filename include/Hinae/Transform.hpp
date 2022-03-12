@@ -48,7 +48,7 @@ constexpr Ray3<T> operator * (const Matrix4<T>& lhs, const Ray3<T>& rhs)
 {
     return
     {
-        lhs * rhs.point,
+        lhs * rhs.origin,
         lhs * rhs.direction
     };
 }
