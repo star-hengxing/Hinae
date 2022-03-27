@@ -13,6 +13,8 @@
 #include <Hinae/Bounds3.hpp>
 #include <Hinae/Ray3.hpp>
 
+#include <Hinae/Trigonometric.hpp>
+
 #include "tools.hpp"
 
 using namespace Hinae;
@@ -389,6 +391,35 @@ static void quaternion_test()
 	static_assert(q2 * q1 == Quaternion{-60, 20, 14, 32});
 }
 
+static void trigonometric_test()
+{
+	static_assert(sin_to_cos2(1) == 0);
+	static_assert(sin_to_cos2(0) == 1);
+	static_assert(sin_to_cos2(0.5) == 0.75);
+
+	static_assert(cos_to_sin2(1) == 0);
+	static_assert(cos_to_sin2(0) == 1);
+	static_assert(cos_to_sin2(0.5) == 0.75);
+
+	{
+		const auto value = std::sqrt(1 - 0.5);
+		EXPECT_EQ(0, sin2_to_cos(1));
+		EXPECT_EQ(value, sin2_to_cos(0.5));
+
+		EXPECT_EQ(0, cos2_to_sin(1));
+		EXPECT_EQ(value, cos2_to_sin(0.5));
+	}
+
+	{
+		const auto value = std::sqrt(1 - 0.5 * 0.5);
+		EXPECT_EQ(0, sin_to_cos(1));
+		EXPECT_EQ(value, sin_to_cos(0.5));
+
+		EXPECT_EQ(0, cos_to_sin(1));
+		EXPECT_EQ(value, cos_to_sin(0.5));
+	}
+}
+
 int main()
 {
 	base_test();
@@ -405,6 +436,8 @@ int main()
 	quaternion_test();
 	bounds3_test();
 	ray3_test();
+
+	trigonometric_test();
 
 	TEST_RESULT();
 }
