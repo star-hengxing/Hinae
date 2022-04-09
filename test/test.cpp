@@ -70,6 +70,7 @@ static void base_test()
 	static_assert(to_degree(PI<double>) == 180.0);
 	static_assert(to_radian(180.0)      == PI<double>);
 
+	static_assert(pow2(2) == 4);
 	static_assert(pow4(2) == 16);
 	static_assert(pow5(2) == 32);
 }

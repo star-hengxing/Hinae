@@ -54,17 +54,29 @@ constexpr T to_degree(T radian) { return (static_cast<T>(180) / PI<T>) * radian;
 template <std::floating_point T>
 constexpr T to_radian(T degree) { return (PI<T> / static_cast<T>(180)) * degree; }
 
-template <arithmetic T>
+template <typename T>
+constexpr T pow2(T x)
+{
+    return x * x;
+}
+
+template <typename T>
+constexpr T pow3(T x)
+{
+    return x * x * x;
+}
+
+template <typename T>
 constexpr T pow4(T x)
 {
-    const T x2 = x * x;
+    const T x2 = pow2(x);
     return x2 * x2;
 }
 
-template <arithmetic T>
+template <typename T>
 constexpr T pow5(T x)
 {
-    const T x2 = x * x;
+    const T x2 = pow2(x);
     return x2 * x2 * x;
 }
 
