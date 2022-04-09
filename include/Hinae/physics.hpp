@@ -23,7 +23,7 @@ refract(const Vector3<T>& wi, const Vector3<T>& n, T eta)
     if(sin2_theta_t >= 1) return {};
 
     const T cos_theta_t = sin2_to_cos(sin2_theta_t);
-    return std::make_optional(eta * wi - (eta * cos_theta_i - cos_theta_t) * n);
+    return Vector3(eta * wi - (eta * cos_theta_i - cos_theta_t) * n);
 }
 
 NAMESPACE_BEGIN(Fresnel)
@@ -32,10 +32,10 @@ template <arithmetic T>
 constexpr T dielectric(T cos_theta_i, T eta_i, T eta_t)
 {
     cos_theta_i = clamp(-ONE<T>, cos_theta_i, ONE<T>);
-    if(cos_theta_i <= 0.f)
+    if(cos_theta_i < 0)
     {
         std::swap(eta_i, eta_t);
-        cos_theta_i = std::abs(cos_theta_i);
+        cos_theta_i = std::abs(cos_theta_i); // cos = -cos
     }
 
     T sin_theta_i = sin_to_cos(cos_theta_i);
@@ -43,13 +43,13 @@ constexpr T dielectric(T cos_theta_i, T eta_i, T eta_t)
     if(sin_theta_t >= 1) return 1;
     T cos_theta_t = sin_to_cos(sin_theta_t);
 
-    T Rparl = ((eta_t * cos_theta_i) - (eta_i * cos_theta_t))
-            / ((eta_t * cos_theta_i) + (eta_i * cos_theta_t));
+    T r_parl = ((eta_t * cos_theta_i) - (eta_i * cos_theta_t))
+             / ((eta_t * cos_theta_i) + (eta_i * cos_theta_t));
 
-    T Rperp = ((eta_i * cos_theta_i) - (eta_t * cos_theta_t))
-            / ((eta_i * cos_theta_i) + (eta_t * cos_theta_t));
+    T r_perp = ((eta_i * cos_theta_i) - (eta_t * cos_theta_t))
+             / ((eta_i * cos_theta_i) + (eta_t * cos_theta_t));
 
-    return (Rparl * Rparl + Rperp * Rperp) / 2;
+    return (pow2(r_parl) + pow2(r_perp)) / 2;
 }
 
 template <arithmetic T>

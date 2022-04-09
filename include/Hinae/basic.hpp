@@ -186,8 +186,8 @@ constexpr T<U> sqrt(const T<U>& x, U exp)
     return ret;
 }
 
-template <template <arithmetic> typename T, arithmetic U, typename W>
-constexpr T<U> lerp(const T<U>& left, const T<U>& right, const W& w)
+template <typename T, typename U>
+constexpr auto lerp(const T& left, const T& right, const U& w)
 {
     return left + (right - left) * w;
 }
